@@ -1,0 +1,63 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^com-(.*)": "@/common/com-$1/index.vue"
+    }
+  },
+  "pages": [{
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/teach/my-student/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/teach/publish-homework/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/teach/my-homework/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/teach/homework-detail/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#f8f8f8"
+  },
+  "tabBar": {
+    "list": [{
+        "pagePath": "pages/teach/my-student/index",
+        "text": "我的学员"
+      },
+      {
+        "pagePath": "pages/teach/my-homework/index",
+        "text": "我的作业"
+      }
+    ]
+  }
+}
