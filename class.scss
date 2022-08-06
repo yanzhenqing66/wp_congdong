@@ -1,0 +1,42 @@
+
+// class 样式
+.border-line {
+  width: 100%;
+  border: 1px solid $uni-border-color;
+  border-radius: 100px;
+}
+
+.inline {
+  display: flex;
+  align-items: center;
+}
+
+.blod {
+  font-weight: bold;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-bewteen {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-bewteen-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

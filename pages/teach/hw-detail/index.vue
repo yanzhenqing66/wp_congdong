@@ -1,6 +1,6 @@
 <template>
   <view class="hwdetail">
-    <view class="hwdetail_title">作业详情</view>
+    <com-title>作业详情</com-title>
     <HomeworkItem />
     <view class="hwdetail_tab uni-mt-8">
       <uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" styleType="text">
@@ -8,10 +8,10 @@
     </view>
     <view class="content uni-mt-8">
       <view v-show="current === 0">
-        <HomeworkItemDetail />
+        <HomeworkItemDetail :current='current' />
       </view>
       <view v-show="current === 1">
-        选项卡2的内容
+        <HomeworkItemDetail :current='current' />
       </view>
     </view>
   </view>
@@ -40,18 +40,6 @@
     height: 100%;
     background-color: $uni-bg-color-grey;
     padding: 0 38rpx;
-
-    &_title {
-      width: 100%;
-      height: 75rpx;
-      background-color: $uni-color-primary;
-      opacity: 0.9;
-      color: #fff;
-      font-size: $uni-font-size-lg;
-      line-height: 75rpx;
-      text-align: center;
-      margin-bottom: 50rpx;
-    }
 
     &_tab {
       background-color: #fff;

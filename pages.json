@@ -6,15 +6,9 @@
     }
   },
   "pages": [{
-      "path": "pages/index/index",
-      "style": {
-        "navigationBarTitleText": "uni-app"
-      }
-    },
-    {
       "path": "pages/login/index",
       "style": {
-        "navigationBarTitleText": "uni-app"
+        "navigationStyle": "custom"
       }
     },
     {
@@ -24,23 +18,26 @@
       }
     },
     {
-      "path": "pages/teach/publish-homework/index",
+      "path": "pages/teach/publish-hw/index",
       "style": {
         "navigationBarTitleText": "uni-app"
       }
     },
     {
-      "path": "pages/teach/my-homework/index",
+      "path": "pages/teach/my-hw/index",
       "style": {
         "navigationBarTitleText": "uni-app"
       }
     },
     {
-      "path": "pages/teach/homework-detail/index",
+      "path": "pages/teach/hw-detail/index",
       "style": {
         "navigationBarTitleText": "",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path": "pages/teach/comment-hw/index"
     }
   ],
   "globalStyle": {
@@ -55,7 +52,7 @@
         "text": "我的学员"
       },
       {
-        "pagePath": "pages/teach/my-homework/index",
+        "pagePath": "pages/teach/my-hw/index",
         "text": "我的作业"
       }
     ]

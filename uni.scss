@@ -15,10 +15,13 @@
 @import '@/uni_modules/uni-scss/variables.scss';
 
 /* 行为相关颜色 */
-$uni-color-primary: #2979ff;
+$uni-color-primary: #007aff;
 $uni-color-success: #4cd964;
 $uni-color-warning: #ffa932;
 $uni-color-error: #dd524d;
+
+$uni-active-color-primary: #0461cc;
+$uni-active-color-warning: #e6982d;
 
 /* 文字基本颜色 */
 $uni-text-color: #333; //基本色
@@ -27,6 +30,7 @@ $uni-text-color-grey: #9fa0a0; //辅助灰色，如加载更多的提示信息
 $uni-text-color-placeholder: #808080;
 $uni-text-color-disable: #c0c0c0;
 
+
 /* 背景颜色 */
 $uni-bg-color: #ffffff;
 $uni-bg-color-grey: #f8f8f8;
@@ -34,7 +38,7 @@ $uni-bg-color-hover: #f1f1f1; //点击状态颜色
 $uni-bg-color-mask: rgba(0, 0, 0, 0.4); //遮罩颜色
 
 /* 边框颜色 */
-$uni-border-color: #c8c7cc;
+$uni-border-color: #efefef;
 
 /* 尺寸变量 */
 
@@ -87,7 +91,7 @@ $uni-font-size-paragraph: 30rpx;
 $uni-space-root:2;
 
 // 主色
-$uni-primary: #2979ff;
+$uni-primary: #007aff;
 $uni-primary-disable:mix(#fff,$uni-primary,50%);
 $uni-primary-light: mix(#fff,$uni-primary,80%);
 
@@ -104,3 +108,4 @@ $uni-warning-light: mix(#fff,$uni-warning,80%);
 $uni-error: #dd524d;
 $uni-error-disable:mix(#fff,$uni-error,50%);
 $uni-error-light: mix(#fff,$uni-error,80%);
+

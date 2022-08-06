@@ -8,7 +8,7 @@
       </view>
       <view class="date uni-mt-10">布置时间：2022/9/30</view>
     </view>
-    <view class="homework_item_line"></view>
+    <view class="border-line uni-my-10"></view>
     <view class="homework_item_content">
       <view class="content">
         <text class="content_title">作业内容: </text>
@@ -32,7 +32,7 @@
   })
   const handleGoDetail = () => {
     uni.navigateTo({
-      url: '/pages/teach/homework-detail/index'
+      url: '/pages/teach/hw-detail/index'
     })
   }
 </script>
@@ -43,12 +43,6 @@
     width: 100%;
     background-color: #fff;
     padding: 50rpx 40rpx 34rpx 40rpx;
-
-    &_line {
-      width: 100%;
-      border: 1px dashed $uni-text-color-grey;
-      margin: 20rpx 0;
-    }
   }
 
   .homework_item_content {
