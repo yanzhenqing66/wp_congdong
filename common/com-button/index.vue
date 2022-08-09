@@ -4,7 +4,7 @@
     'warning': type === 'warning'},
     'base',
     className
-  ]" @click='click'>
+  ]" @click='click' :style='{width: width, height: height}'>
     <slot></slot>
   </button>
 </template>
@@ -20,6 +20,8 @@
       default: 'default'
     },
     className: String,
+    width: String,
+    height: String
   })
 
   const emit = defineEmits(['click'])
@@ -51,6 +53,8 @@
   }
 
   .base {
+    @extend %flexCenter;
+
     &::after {
       border: none;
     }

@@ -17,6 +17,12 @@
   @import '@/uni_modules/uni-scss/index.scss';
   @import '@/class.scss';
 
+  // tab图标
+  .uni-tabbar .uni-tabbar__icon {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
 
   page {
     margin: 0;

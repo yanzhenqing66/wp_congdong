@@ -1,5 +1,6 @@
 <template>
   <view class="stu_no">
+    <image src="/static/images/no_num.png" class="stu_no_icon"></image>
     <slot></slot>
   </view>
 </template>
@@ -21,7 +22,12 @@
     color: #fff;
     padding: 10rpx 12rpx 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-around;
     font-weight: 400;
+
+    &_icon {
+      width: 29rpx;
+      height: 25rpx;
+    }
   }
 </style>

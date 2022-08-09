@@ -5,6 +5,7 @@
       "^com-(.*)": "@/common/com-$1/index.vue"
     }
   },
+
   "pages": [{
       "path": "pages/login/index",
       "style": {
@@ -12,48 +13,47 @@
       }
     },
     {
-      "path": "pages/teach/my-student/index",
-      "style": {
-        "navigationBarTitleText": "uni-app"
-      }
+      "path": "pages/teach/my-student/index"
     },
     {
-      "path": "pages/teach/publish-hw/index",
-      "style": {
-        "navigationBarTitleText": "uni-app"
-      }
+      "path": "pages/teach/publish-hw/index"
     },
     {
-      "path": "pages/teach/my-hw/index",
-      "style": {
-        "navigationBarTitleText": "uni-app"
-      }
+      "path": "pages/teach/my-hw/index"
     },
     {
-      "path": "pages/teach/hw-detail/index",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
+      "path": "pages/teach/hw-detail/index"
     },
     {
       "path": "pages/teach/comment-hw/index"
     }
   ],
+
+
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
+    // "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#fff",
     "backgroundColor": "#f8f8f8"
   },
+
+
   "tabBar": {
+    "backgroundColor": "#ffa932",
+    "color": "#eee",
+    "selectedColor": "#fff",
+    "borderStyle": "white",
     "list": [{
         "pagePath": "pages/teach/my-student/index",
-        "text": "我的学员"
+        "text": "我的学员",
+        "iconPath": "static/images/tabbar/stu.png",
+        "selectedIconPath": "static/images/tabbar/sel-stu.png"
       },
       {
         "pagePath": "pages/teach/my-hw/index",
-        "text": "我的作业"
+        "text": "我的作业",
+        "iconPath": "static/images/tabbar/hw.png",
+        "selectedIconPath": "static/images/tabbar/sel-hw.png"
       }
     ]
   }

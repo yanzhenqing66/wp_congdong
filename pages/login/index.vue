@@ -50,12 +50,13 @@
       top: 75%;
       left: 50%;
       transform: translateX(-50%);
+      width: 460rpx;
       font-size: $uni-font-size-sm;
       color: #fff;
       text-align: center;
 
       &_btn {
-        width: 435rpx;
+        width: 100%;
         height: 90rpx;
         background-color: $uni-color-warning;
         color: #fff;

@@ -8,7 +8,7 @@
         <text class="stu_detail_info_time">签约时间：20220906～20230906</text>
       </view>
     </view>
-    <view class="stu_line"></view>
+    <view class="border-line uni-my-12"></view>
   </view>
 </template>
 
@@ -48,13 +48,6 @@
           color: $uni-text-color-grey;
         }
       }
-    }
-
-    &_line {
-      width: 100%;
-      border: 1px dashed $uni-text-color-grey;
-      margin-top: 20rpx;
-      margin-bottom: 25rpx;
     }
   }
 </style>
