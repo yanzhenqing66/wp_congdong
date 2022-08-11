@@ -5,8 +5,8 @@
     <view class="search">
       <view>
         <image src="/static/images/teach/calendar.png" class="search_calendar"></image>
-        <text class="search_date">{{showTime.month}}月{{showTime.day}}日 {{showTime.weekday}}</text>
-        <uni-tag v-show="showTime.day === nowDay" text="今天" size="small" type="primary" circle></uni-tag>
+        <text class="search_date">{{showTime.formatMM}}月{{showTime.formatDD}}日 {{showTime.weekday}}</text>
+        <uni-tag v-show="showTime.formatDD === nowDay" text="今天" size="small" type="primary" circle></uni-tag>
       </view>
       <view class="search_bar">
         <uni-easyinput v-model="searchVal" placeholder="搜索学员" class="search_bar_input" :clearable="false">
@@ -25,7 +25,6 @@
     computed
   } from 'vue'
   import {
-    formatDD,
     formatDate,
     formatStr
   } from '@/libs/day.js'
@@ -34,23 +33,17 @@
 
   const date = ref(Date.now())
 
-  const nowDay = computed(() => {
-    const {
-      day
-    } = formatDate(Date.now())
-    return formatStr(day)
-  })
-
+  const nowDay = computed(() => formatDate(Date.now()).formatDD)
 
   const showTime = computed(() => {
     const {
-      month,
-      day,
+      formatMM,
+      formatDD,
       weekday
     } = formatDate(date.value)
     return {
-      month: month + 1,
-      day: formatStr(day),
+      formatMM,
+      formatDD,
       weekday
     }
   })

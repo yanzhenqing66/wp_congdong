@@ -2,7 +2,7 @@
   <view class="stu">
     <com-stu-no>NO.000000</com-stu-no>
     <view class="stu_detail">
-      <image src="/static/images/teach/calendar.png" class="stu_detail_avatar"></image>
+      <com-image src='' width='95rpx' height='95rpx' className='uni-radius-pill'></com-image>
       <view class="stu_detail_info">
         <text class="stu_detail_info_title">丰台小乔丹</text>
         <text class="stu_detail_info_time">签约时间：20220906～20230906</text>
@@ -25,11 +25,6 @@
     &_detail {
       padding-top: 45rpx;
       display: flex;
-
-      &_avatar {
-        width: 95rpx;
-        height: 95rpx;
-      }
 
       &_info {
         flex: 1;

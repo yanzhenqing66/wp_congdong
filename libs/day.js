@@ -1,15 +1,5 @@
 const weekArray = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
 
-export function formatDD(date) {
-  if (!date) return
-  const {
-    year,
-    month,
-    day
-  } = formatDate(date)
-  return year + '-' + formatStr(month + 1) + '-' + formatStr(day)
-}
-
 export function formatDate(date) {
   if (!date) return
   const newDate = new Date(date)
@@ -35,7 +25,10 @@ export function formatDate(date) {
     second,
     ma,
     week,
-    weekday: weekArray[week]
+    weekday: weekArray[week],
+    formatMM: formatStr(month + 1),
+    formatDD: formatStr(day),
+    fullDate: year + '-' + formatStr(month + 1) + '-' + formatStr(day)
   }
 }
 

@@ -16,9 +16,14 @@
       </view>
     </view>
     <view class="homework_item_handle" v-if="handleBtn">
-      <button class="homework_item_handle_noSubmit" size="mini">未提交作业数/2</button>
-      <button class="homework_item_handle_noComment" size="mini">未点评作业数/2</button>
-      <button class="homework_item_handle_detail" size="mini" @click="handleGoDetail">作业详情</button>
+      <view class='handle_btn flex-center uni-primary-bg uni-radius-pill'>
+        未提交作业数/2
+      </view>
+      <view class='handle_btn flex-center uni-primary-bg uni-radius-pill'>
+        未点评作业数/2
+      </view>
+      <com-button type='warning' size='mini' width='195rpx' height='59rpx' className='uni-radius-pill'
+        @click="handleGoDetail">作业详情</com-button>
     </view>
   </view>
 </template>
@@ -75,15 +80,11 @@
     align-items: flex-end;
     justify-content: space-between;
 
-    &_noSubmit,
-    &_noComment {
+    .handle_btn {
       width: 192rpx;
       height: 42rpx;
-      @extend %flexCenter;
-      font-size: 18rpx;
-      background-color: $uni-color-primary;
+      font-size: $uni-font-size-sm;
       color: #fff;
-      border-radius: 100px;
     }
 
     &_detail {

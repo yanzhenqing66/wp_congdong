@@ -4,26 +4,32 @@
       <com-userhead></com-userhead>
       <view class="publish_edit">编辑作业信息</view>
       <view class="publish_calendar">
-        <uni-calendar v-model="form.hwDate" :insert="true" range :showMonth="false" @change="handleDateChange" />
+        <uni-calendar v-model="form.hwDate" :start-date="startDate" :insert="true" range :showMonth="false"
+          @change="handleDateChange" />
       </view>
       <view class="publish_select">
-        <uni-data-select v-model="form.train" :localdata="trainGoalList" @change="handleTrainChange" placeholder="训练目标">
+        <uni-data-select v-model="form.train" :localdata="trainGoalList" @change="handleTrainChange" placeholder="作业目标">
         </uni-data-select>
         <view class="seat"></view>
-        <uni-easyinput trim="all" v-model="value" placeholder="填写动作要点" @input="input"></uni-easyinput>
+        <uni-easyinput trim="all" v-model="actionPoint" placeholder="填写动作要点" @input="handlePoint"></uni-easyinput>
         <view class="seat"></view>
         <view class="publish_select_content">
-          <view class="publish_select_content_title"> 体前变向运球 </view>
-          <view class="publish_select_content_video"> 动作示范视频 </view>
-          <view class="publish_select_content_amount">
-            <uni-number-box :min="0" :max="100" />
-            <text class="publish_select_content_amount_unit">组</text>
+          <view class="title uni-primary-bg flex-center max-1-line">
+            <uni-icons type="closeempty" color="#fff" size="22rpx" class='uni-mt-1 uni-mr-1'></uni-icons>
+            <text>体前变向运球</text>
+          </view>
+          <view class="video uni-warning-bg uni-mx-4 flex-center">
+            <uni-icons type="videocam" color="#fff" size="25rpx" class='uni-mt-1'></uni-icons>
+            <text>动作示范视频</text>
+          </view>
+          <view class="amount">
+            <uni-number-box :min="1" :max="100" />
+            <text class="amount_unit uni-primary-bg flex-center">组</text>
           </view>
         </view>
         <view class="border-line uni-my-14"></view>
         <view class="publish_select_btn">
-          <!-- <button class="publish_select_btn_reset" size="mini">重置内容</button> -->
-          <com-button type='primary' size='mini' width='235rpx' height='67rpx'>重置内容</com-button>
+          <com-button type='primary' size='mini' width='235rpx' height='67rpx' @click='handleReset'>重置内容</com-button>
           <com-button size="mini" type='warning' width='235rpx' height='67rpx'>
             确认发布
           </com-button>
@@ -36,10 +42,14 @@
 <script setup>
   import {
     ref,
-    reactive
+    reactive,
+    computed
   } from 'vue'
+  import {
+    formatDate
+  } from '@/libs/day.js'
 
-  const trainGoalList = reactive([{
+  const trainGoalList = [{
     value: 0,
     text: '0'
   }, {
@@ -48,20 +58,33 @@
   }, {
     value: 2,
     text: '2'
-  }])
+  }]
 
   const form = reactive({
     hwDate: [],
-    train: ''
+    train: '',
+    actionPoint: ''
+  })
+
+  const startDate = computed(() => {
+    return formatDate(Date.now()).fullDate
   })
 
 
   const handleDateChange = (val) => {
     form.hwDate = val
-    console.log(form);
+    console.log(form.hwDate);
   }
 
   const handleTrainChange = () => {
+
+  }
+
+  const handlePoint = (val) => {
+
+  }
+
+  const handleReset = () => {
 
   }
 </script>
@@ -94,7 +117,6 @@
       ::v-deep.uni-calendar-item__weeks-box-item {
         width: 70rpx;
         height: 80rpx;
-        border-radius: 100px;
       }
 
       ::v-deep.uni-calendar-item__weeks-lunar-text {
@@ -118,31 +140,21 @@
     display: flex;
     color: #fff;
 
-    &_title {
-      width: 173rpx;
-      color: #fff;
-      background-color: $uni-color-primary;
-      @extend %flexCenter;
+    .title {
+      width: 200rpx;
     }
 
-    &_video {
-      margin: 0 8rpx;
-      width: 210rpx;
-      flex: 1;
-      color: #fff;
-      background-color: $uni-color-warning;
-      @extend %flexCenter;
+    .video {
+      width: 180rpx;
     }
 
-    &_amount {
+    .amount {
       flex: 1;
       @extend %flexCenter;
 
       &_unit {
         width: 40rpx;
         height: 100%;
-        background-color: $uni-color-primary;
-        @extend %flexCenter;
       }
     }
   }

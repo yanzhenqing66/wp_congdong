@@ -29,9 +29,9 @@
 	} 
 	@if $direction == a {
 		@if $n {
-			#{$space}:#{$i*$uni-space-root}px;
+			#{$space}:#{$i*$uni-space-root}rpx;
 		} @else {
-			#{$space}:#{-$i*$uni-space-root}px;
+			#{$space}:#{-$i*$uni-space-root}rpx;
 		}
 	} 
 }
@@ -43,7 +43,7 @@
 	} @else {
 		$space: padding;
 	}
-	@for $i from 0 through 16 {
+	@for $i from 0 through 20 {
 		@each $direction in t, r, b, l, x, y, a {
 			.uni-#{$orientation}#{$direction}-#{$i} { 
 				@include  get-styles($direction,$i,$space,true);

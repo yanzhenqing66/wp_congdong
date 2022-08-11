@@ -35,8 +35,32 @@
   justify-content: space-between;
 }
 
-.flex-bewteen-center {
+.flex-around {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+.flex-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.flex-align-center {
+  display: flex;
   align-items: center;
+}
+
+.max-1-line {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.max-2-line {
+  display: -webkit-box !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }

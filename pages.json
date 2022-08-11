@@ -13,13 +13,13 @@
       }
     },
     {
-      "path": "pages/teach/my-student/index"
+      "path": "pages/teach/student/index"
     },
     {
       "path": "pages/teach/publish-hw/index"
     },
     {
-      "path": "pages/teach/my-hw/index"
+      "path": "pages/teach/hw/index"
     },
     {
       "path": "pages/teach/hw-detail/index"
@@ -44,13 +44,13 @@
     "selectedColor": "#fff",
     "borderStyle": "white",
     "list": [{
-        "pagePath": "pages/teach/my-student/index",
+        "pagePath": "pages/teach/student/index",
         "text": "我的学员",
         "iconPath": "static/images/tabbar/stu.png",
         "selectedIconPath": "static/images/tabbar/sel-stu.png"
       },
       {
-        "pagePath": "pages/teach/my-hw/index",
+        "pagePath": "pages/teach/hw/index",
         "text": "我的作业",
         "iconPath": "static/images/tabbar/hw.png",
         "selectedIconPath": "static/images/tabbar/sel-hw.png"
