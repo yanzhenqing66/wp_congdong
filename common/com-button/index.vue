@@ -13,7 +13,7 @@
   const props = defineProps({
     size: {
       type: String,
-      default: 'default'
+      default: 'mini'
     },
     type: {
       type: String,

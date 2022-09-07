@@ -3,11 +3,7 @@
     <uni-datetime-picker type="date" return-type="timestamp" :clear-icon="false" v-model="date"
       @change="handleDateChange" />
     <view class="search">
-      <view>
-        <image src="/static/images/teach/calendar.png" class="search_calendar"></image>
-        <text class="search_date">{{showTime.formatMM}}月{{showTime.formatDD}}日 {{showTime.weekday}}</text>
-        <uni-tag v-show="showTime.formatDD === nowDay" text="今天" size="small" type="primary" circle></uni-tag>
-      </view>
+      <com-cur-date :curDate='date'></com-cur-date>
       <view class="search_bar">
         <uni-easyinput v-model="searchVal" placeholder="搜索学员" class="search_bar_input" :clearable="false">
         </uni-easyinput>
@@ -32,21 +28,6 @@
   const searchVal = ref('')
 
   const date = ref(Date.now())
-
-  const nowDay = computed(() => formatDate(Date.now()).formatDD)
-
-  const showTime = computed(() => {
-    const {
-      formatMM,
-      formatDD,
-      weekday
-    } = formatDate(date.value)
-    return {
-      formatMM,
-      formatDD,
-      weekday
-    }
-  })
 
   const handleDateChange = (val) => {
     date.value = val
@@ -76,16 +57,6 @@
     background-color: #fff;
     padding: 0 10rpx;
     font-size: 24rpx;
-
-    &_calendar {
-      width: 24rpx;
-      height: 24rpx;
-    }
-
-    &_date {
-      margin: 0 10rpx;
-      color: #727171;
-    }
 
     &_bar {
       width: 304rpx;

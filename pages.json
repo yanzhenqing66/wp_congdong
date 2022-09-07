@@ -6,12 +6,50 @@
     }
   },
 
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#f8f8f8"
+  },
+
   "pages": [{
       "path": "pages/login/index",
       "style": {
         "navigationStyle": "custom"
       }
     },
+    // 学生端路由
+    {
+      "path": "pages/student/home/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/student/course/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/student/train/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/student/train/publish-hw"
+    },
+    {
+      "path": "pages/student/train/sign-teach"
+    },
+    {
+      "path": "pages/student/person/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    // 教师端路由
     {
       "path": "pages/teach/student/index"
     },
@@ -29,32 +67,48 @@
     }
   ],
 
-
-  "globalStyle": {
-    "navigationBarTextStyle": "black",
-    // "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#fff",
-    "backgroundColor": "#f8f8f8"
-  },
-
-
   "tabBar": {
-    "backgroundColor": "#ffa932",
+    "backgroundColor": "#07105D",
     "color": "#eee",
     "selectedColor": "#fff",
-    "borderStyle": "white",
     "list": [{
-        "pagePath": "pages/teach/student/index",
-        "text": "我的学员",
-        "iconPath": "static/images/tabbar/stu.png",
-        "selectedIconPath": "static/images/tabbar/sel-stu.png"
+        "pagePath": "pages/student/home/index",
+        "text": "首页",
+        "iconPath": "static/images/tabbar/home.png",
+        "selectedIconPath": "static/images/tabbar/home_sel.png"
       },
       {
-        "pagePath": "pages/teach/hw/index",
-        "text": "我的作业",
-        "iconPath": "static/images/tabbar/hw.png",
-        "selectedIconPath": "static/images/tabbar/sel-hw.png"
+        "pagePath": "pages/student/course/index",
+        "text": "课程",
+        "iconPath": "static/images/tabbar/course.png",
+        "selectedIconPath": "static/images/tabbar/course_sel.png"
+      },
+      {
+        "pagePath": "pages/student/train/index",
+        "text": "训练",
+        "iconPath": "static/images/tabbar/train.png",
+        "selectedIconPath": "static/images/tabbar/train_sel.png"
+      },
+      {
+        "pagePath": "pages/student/person/index",
+        "text": "成长",
+        "iconPath": "static/images/tabbar/stu.png",
+        "selectedIconPath": "static/images/tabbar/sel-stu.png"
       }
     ]
   }
 }
+
+// 教师端 tabbar
+// {
+//   "pagePath": "pages/teach/student/index",
+//   "text": "我的学员",
+//   "iconPath": "static/images/tabbar/stu.png",
+//   "selectedIconPath": "static/images/tabbar/sel-stu.png"
+// },
+// {
+//   "pagePath": "pages/teach/hw/index",
+//   "text": "我的作业",
+//   "iconPath": "static/images/tabbar/hw.png",
+//   "selectedIconPath": "static/images/tabbar/sel-hw.png"
+// }

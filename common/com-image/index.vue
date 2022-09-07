@@ -21,6 +21,7 @@
   const style = reactive({
     width: props.width,
     height: props.height,
+    // borderRadius: props.radius,
     ...props.styleName
   })
 </script>

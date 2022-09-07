@@ -2,7 +2,7 @@
   <view class="stu">
     <com-stu-no>NO.000000</com-stu-no>
     <view class="stu_detail">
-      <com-image src='' width='95rpx' height='95rpx' className='uni-radius-pill'></com-image>
+      <com-image src='' width='95rpx' height='95rpx'></com-image>
       <view class="stu_detail_info">
         <text class="stu_detail_info_title">丰台小乔丹</text>
         <text class="stu_detail_info_time">签约时间：20220906～20230906</text>

@@ -1,17 +1,25 @@
 <template>
-  <view class="title">
+  <view :class="['title', 'uni-primary-bg', className]" :style="{background: bgColor}">
     <slot />
   </view>
 </template>
 
-<script>
+<script setup>
+  defineProps({
+    bgColor: {
+      type: String,
+      default: ''
+    },
+    className: {
+      type: String
+    }
+  })
 </script>
 
 <style scoped lang="scss">
   .title {
     width: 100%;
     height: 75rpx;
-    background-color: $uni-color-primary;
     opacity: 0.9;
     color: #fff;
     font-size: $uni-font-size-lg;
