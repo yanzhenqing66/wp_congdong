@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <view class="publish">
-      <UserHead />
+      <!-- <UserHead /> -->
       <view class="publish_edit">编辑作业信息</view>
       <view class="publish_calendar">
         <uni-calendar v-model="form.hwDate" :start-date="startDate" :insert="true" range :showMonth="false"
@@ -43,23 +43,20 @@
   import {
     ref,
     reactive,
-    computed
+    computed,
+    onMounted
   } from 'vue'
+  import {
+      onLoad,
+      onShow
+    } from "@dcloudio/uni-app"
   import {
     formatDate
   } from '@/libs/day.js'
-  inport UserHead from '@/components/teach/user-head'
+  import {fetchHwTemp} from '@/api/path/teach.js'  
+  import UserHead from '@/components/teach/user-head'
 
-  const trainGoalList = [{
-    value: 0,
-    text: '0'
-  }, {
-    value: 1,
-    text: '1'
-  }, {
-    value: 2,
-    text: '2'
-  }]
+  const trainGoalList = reactive([])
 
   const form = reactive({
     hwDate: [],
@@ -70,6 +67,25 @@
   const startDate = computed(() => {
     return formatDate(Date.now()).fullDate
   })
+  
+  onLoad((option) => {
+    console.log('pppp');
+    console.log(option);
+    
+  })
+  
+  onMounted(() => {
+	  fetchHwTemp().then((res) => {
+	    const list = res.map(item => {
+	      item.value = item.id
+	      item.text = item.title
+	      return item
+	    })
+	    console.log(list);
+	    trainGoalList.push(...list)
+	    console.log(trainGoalList);
+	  })
+  })
 
 
   const handleDateChange = (val) => {
@@ -77,8 +93,10 @@
     console.log(form.hwDate);
   }
 
-  const handleTrainChange = () => {
-
+  const handleTrainChange = (val) => {
+    console.log(val);
+    form.train = val
+   console.log(form); 
   }
 
   const handlePoint = (val) => {
