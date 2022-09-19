@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <com-userhead></com-userhead>
+    <UserHead :data='data' />
     <view class="stu">
       <view class="stu_handle">
         <com-button size='mini' type='warning' className="uni-radius-pill" @click="handlePublish">发布作业</com-button>
@@ -11,6 +11,16 @@
 </template>
 
 <script setup>
+  import {
+    onMounted
+  } from 'vue'
+  import UserHead from '@/components/teach/user-head'
+
+  const props = defineProps({
+    data: Object,
+    default: {}
+  })
+
   const handlePublish = () => {
     uni.navigateTo({
       url: '/pages/teach/publish-hw/index',

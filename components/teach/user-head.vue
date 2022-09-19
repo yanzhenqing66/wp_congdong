@@ -5,7 +5,7 @@
       <com-image src='' width='95rpx' height='95rpx'></com-image>
       <view class="stu_detail_info">
         <text class="stu_detail_info_title">{{data.nikeName}}</text>
-        <text class="stu_detail_info_time">签约时间：20220906～20230906</text>
+        <text class="stu_detail_info_time">签约时间： {{curDate(data.startTime, data.endTime)}}</text>
       </view>
     </view>
     <view class="border-line uni-my-12"></view>
@@ -14,18 +14,19 @@
 
 <script setup>
   import {
-    onMounted
+    onMounted,
+    computed
   } from 'vue'
+  import {
+    formatDate
+  } from '@/libs/day.js'
   const props = defineProps({
     data: Object,
     default: {}
   })
 
-
-  onMounted(() => {
-
-    console.log(props.data);
-  })
+  const curDate = (start, end) => computed(() => formatDate(start).year + formatDate(start).formatMM + formatDate(start)
+    .formatDD + ' - ' + formatDate(end).year + formatDate(end).formatMM + formatDate(end).formatDD)
 </script>
 
 <style lang="scss" scoped>

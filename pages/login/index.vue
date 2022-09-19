@@ -1,27 +1,63 @@
 <template>
-  <view class="login">
-    <image src="/static/images/logo.png" class="login_logo"></image>
-    <view class="login_auth">
-      <text>申请获取您的手机号及公开信息（昵称及头像等）</text>
-      <button class="login_auth_btn uni-my-13" open-type="getUserInfo" @getphonenumber="getphoneNumber"
-        @getuserinfo="getuserinfo">微信一键登录</button>
-      <text>登录即表示同意 <text class="uni-warning">《丛动体育服务协议》</text></text>
+  <com-stu-layout headShow>
+    <view class="login">
+      <image src="/static/images/logo.png" class="login_logo"></image>
+      <view class="login_auth">
+        <text>获取您的公开信息（昵称及头像等）</text>
+        <button class="login_auth_btn uni-my-13" @click="login">微信一键登录</button>
+        <text>登录即表示同意 <text class="uni-warning">《丛动体育服务协议》</text></text>
+      </view>
     </view>
-  </view>
+  </com-stu-layout>
 </template>
 
 <script setup>
   import {
     ref
   } from 'vue'
+  import {
+    userLogin,
+    setUserInfo,
+    getUserInfo
+  } from '@/api/path/login.js'
 
-  const getuserinfo = (val) => {
-    console.log(val);
+
+  const login = () => {
+    uni.login({
+      provider: 'weixin',
+    }).then(res => {
+      goUser(res.code)
+    })
   }
 
-  const getphoneNumber = (val) => {
-    console.log(val);
+  const goUser = (code) => {
+    userLogin(code).then(result => {
+      if (result.data) {
+        console.log(result.data)
+        uni.setStorageSync('token', result.data.maOpenid)
+        uni.setStorageSync('user', result.data)
+        if (result.data.userType === 2) {
+          uni.redirectTo({
+            url: '/pages/teach/student/index'
+          })
+        } else if (result.data.userType === 3) {
+          uni.navigateTo({
+            url: '/pages/login/questions'
+          })
+        }
+      }
+    })
   }
+
+  // const getUserInfo = () => {
+  // uni.getUserInfo().then(async res => {
+  //   await setUserInfo({
+  //     openId: result.data,
+  //     avatar: res.userInfo.avatarUrl,
+  //     nikeName: res.userInfo.nickName
+  //   })
+  // })
+  // }
 </script>
 
 <style scoped lang="scss">
@@ -29,16 +65,10 @@
     position: relative;
     width: 100%;
     height: 100%;
-    background: url('https://poppyapps.oss-cn-beijing.aliyuncs.com/main-bg.png') no-repeat;
-    background-size: 100% 100%;
-    // background-size: cover;
-    /*关键*/
-    background-attachment: fixed;
-    background-position: center;
 
     &_logo {
       position: absolute;
-      top: 30%;
+      top: 20%;
       left: 50%;
       transform: translateX(-50%);
       width: 284rpx;

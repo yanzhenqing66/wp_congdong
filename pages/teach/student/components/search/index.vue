@@ -5,9 +5,9 @@
     <view class="search">
       <com-cur-date :curDate='date'></com-cur-date>
       <view class="search_bar">
-        <uni-easyinput v-model="searchVal" placeholder="搜索学员" class="search_bar_input" :clearable="false">
+        <uni-easyinput v-model="search" placeholder="搜索学员" class="search_bar_input" :clearable="false">
         </uni-easyinput>
-        <button class="search_bar_btn" size="mini" @click="searchClick">
+        <button class="search_bar_btn" size="mini" @click="goSearch">
           <uni-icons type="search" size="19" color="#fff"></uni-icons>
         </button>
       </view>
@@ -18,24 +18,30 @@
 <script setup>
   import {
     ref,
-    computed
   } from 'vue'
   import {
     formatDate,
     formatStr
   } from '@/libs/day.js'
 
-  const searchVal = ref('')
-
+  const search = ref('')
   const date = ref(Date.now())
+
+  const emit = defineEmits(['handleSearch', 'handleDate'])
 
   const handleDateChange = (val) => {
     date.value = val
+    emit('handleDate')
   }
 
-  const searchClick = () => {
-    console.log(searchVal.value)
+  const goSearch = () => {
+    emit('handleSearch')
   }
+
+  defineExpose({
+    search,
+    date
+  })
 </script>
 
 <style scoped lang="scss">

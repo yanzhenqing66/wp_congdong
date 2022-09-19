@@ -2,7 +2,7 @@
 // class 样式
 .border-line {
   width: 100%;
-  border: 1px solid #eee;
+  border: 0.5px solid #eee;
   border-radius: 100px;
 }
 
@@ -11,8 +11,20 @@
   align-items: center;
 }
 
-.blod {
+.bold {
   font-weight: bold;
+}
+
+.grey {
+  color: $uni-text-color-grey;
+}
+
+.text-sm {
+  font-size: $uni-font-size-sm; 
+}
+
+.text-lg {
+  font-size: $uni-font-size-lg; 
 }
 
 .flex {

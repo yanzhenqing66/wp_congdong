@@ -18,6 +18,18 @@
         "navigationStyle": "custom"
       }
     },
+    {
+      "path": "pages/login/questions",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/submit-questions",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
     // 学生端路由
     {
       "path": "pages/student/home/index",

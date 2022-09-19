@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <view class="publish">
-      <com-userhead></com-userhead>
+      <UserHead />
       <view class="publish_edit">编辑作业信息</view>
       <view class="publish_calendar">
         <uni-calendar v-model="form.hwDate" :start-date="startDate" :insert="true" range :showMonth="false"
@@ -48,6 +48,7 @@
   import {
     formatDate
   } from '@/libs/day.js'
+  inport UserHead from '@/components/teach/user-head'
 
   const trainGoalList = [{
     value: 0,

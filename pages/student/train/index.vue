@@ -1,6 +1,6 @@
 <template>
   <com-stu-layout headShow>
-    <view class="train" scroll-y="true">
+    <view class="train">
       <view class="train_methods">
         <uni-segmented-control :current="trainMCur" :values="trainMethods" @clickItem="handleTrainMethodsChange"
           styleType="button" activeColor="#fff">

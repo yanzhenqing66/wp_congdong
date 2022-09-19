@@ -1,7 +1,9 @@
 <template>
   <view class="stu_no">
     <image src="/static/images/no_num.png" class="stu_no_icon"></image>
-    <slot></slot>
+    <view class="uni-ml-2 uni-mt-n2">
+      <slot />
+    </view>
   </view>
 </template>
 
@@ -13,17 +15,14 @@
     position: absolute;
     top: -29rpx;
     left: -11rpx;
-
     width: 183rpx;
     height: 61rpx;
     background: url('~@/static/images/teach/stu_no_bg.png') no-repeat;
     background-size: cover;
     font-size: $uni-font-size-sm;
     color: #fff;
-    padding: 10rpx 12rpx 0;
+    padding: 12rpx 12rpx 0;
     display: flex;
-    justify-content: space-around;
-    font-weight: 400;
 
     &_icon {
       width: 29rpx;
