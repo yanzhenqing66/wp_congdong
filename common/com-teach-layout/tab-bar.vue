@@ -18,7 +18,13 @@
     reactive
   } from 'vue'
 
-  const curPath = ref('/pages/teach/student/index')
+  defineProps({
+    curPath: {
+      type: String,
+      default: '/pages/teach/student/index'
+    }
+  })
+
 
   const tabbar = reactive([{
       "pagePath": "/pages/teach/student/index",
@@ -77,7 +83,7 @@
     .uni-tabbar-label {
       line-height: 24rpx;
       font-size: $uni-font-size-sm;
-      color: $uni-text-color-grey;
+      color: rgba(255, 255, 255, 0.5);
 
       &.active {
         font-weight: 600;

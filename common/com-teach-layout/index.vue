@@ -2,12 +2,19 @@
   <view class="teach-layout">
     <slot />
     <view class="footer">
-      <com-tab-bar></com-tab-bar>
+      <tab-bar :curPath='curPath'></tab-bar>
     </view>
   </view>
 </template>
 
 <script setup>
+  import TabBar from './tab-bar.vue'
+  defineProps({
+    curPath: {
+      type: String,
+      default: '/pages/teach/student/index'
+    }
+  })
 </script>
 
 <style scoped>

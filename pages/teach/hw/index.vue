@@ -1,5 +1,5 @@
 <template>
-  <com-teach-layout>
+  <com-teach-layout curPath='/pages/teach/hw/index'>
     <view class="homework">
       <view class="homework_top">
         <com-button size='mini' type='warning' className='homework_publish uni-radius-pill uni-mt-15' width='444rpx'

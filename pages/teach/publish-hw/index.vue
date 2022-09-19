@@ -48,7 +48,7 @@
   import {
     formatDate
   } from '@/libs/day.js'
-  inport UserHead from '@/components/teach/user-head'
+  import UserHead from '@/components/teach/user-head'
 
   const trainGoalList = [{
     value: 0,

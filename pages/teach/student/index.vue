@@ -1,5 +1,5 @@
 <template>
-  <com-teach-layout>
+  <com-teach-layout curPath='/pages/teach/student/index'>
     <view class="container">
       <teach-search ref="query" @handleSearch='handleSearch' @handleDate='handleDate'>
       </teach-search>
