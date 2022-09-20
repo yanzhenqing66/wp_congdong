@@ -3,7 +3,8 @@
     <UserHead :data='data' />
     <view class="stu">
       <view class="stu_handle">
-        <com-button size='mini' type='warning' className="uni-radius-pill" @click="handlePublish">发布作业</com-button>
+        <com-button size='mini' type='warning' className="uni-radius-pill" @click="handlePublish(data.studentId)">发布作业
+        </com-button>
         <com-button type="primary" className="uni-radius-pill uni-ml-12" size="mini">查看问卷</com-button>
       </view>
     </view>
@@ -21,9 +22,9 @@
     default: {}
   })
 
-  const handlePublish = () => {
+  const handlePublish = (studentId) => {
     uni.navigateTo({
-      url: '/pages/teach/publish-hw/index',
+      url: `/pages/teach/publish-hw/index?studentId=${studentId}`,
     })
   }
 </script>
