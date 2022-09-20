@@ -2,7 +2,7 @@
   <view class="stu">
     <com-stu-no>NO.{{data.userNo}}</com-stu-no>
     <view class="stu_detail">
-      <com-image src='' width='95rpx' height='95rpx'></com-image>
+      <com-image :src='data.avatar' width='95rpx' height='95rpx'></com-image>
       <view class="stu_detail_info">
         <text class="stu_detail_info_title">{{data.nikeName}}</text>
         <text class="stu_detail_info_time">签约时间： {{curDate(data.startTime, data.endTime)}}</text>
