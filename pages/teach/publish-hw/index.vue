@@ -68,13 +68,11 @@
   const trainGoalList = reactive([])
 
   const form = reactive({
-    hwDate: [],
+    hwDate: null,
     train: '',
     actionPoint: '',
     studentId: ''
   })
-
-  console.log(form.hwDate);
 
   const stuDetail = reactive({
     data: {}
@@ -154,23 +152,56 @@
 
   const handleDateChange = (val) => {
     form.hwDate = val
-    console.log(form.hwDate)
   }
 
   const handlePubHw = () => {
-    const hwTempIds = tempDetailList.map(item => item.id)
-    const params = {
-      teacherId: uni.getStorageSync('user')?.id
-      homeworks: [{
+    if (!tempDetailList.value.length) return
+    const hwTempIds = tempDetailList.value.map(item => item.id)
+
+    console.log(hwTempIds);
+
+    let homeworkDate
+    if (form.hwDate) {
+      const range = form.hwDate.range.data
+      const fulldate = form.hwDate.fulldate
+      if (range.length > 1) {
+        homeworkDate = range.map(item => {
+          return new Date(item.replace(/-/g, '/')).getTime()
+        })
+      } else {
+        homeworkDate = new Date(fulldate.replace(/-/g, '/')).getTime()
+      }
+    } else {
+      homeworkDate = new Date(startDate.value.replace(/-/g, '/')).getTime()
+    }
+
+    let homeworks
+
+    if (typeof homeworkDate === 'number') {
+      homeworks = [{
         studentId: form.studentId,
-        homeworkDate: 1663590582,
+        homeworkDate: homeworkDate,
         homeworkTemplateId: form.train,
         homeworkDetailTemplateId: hwTempIds
       }]
+    } else {
+      homeworks = homeworkDate.map(item => ({
+        studentId: form.studentId,
+        homeworkDate: item,
+        homeworkTemplateId: form.train,
+        homeworkDetailTemplateId: hwTempIds
+      }))
     }
-    // fetchPubHw().then(res => {
-    //   console.log(res);
-    // })
+
+    // if(range)
+    const params = {
+      teacherId: uni.getStorageSync('user')?.id,
+      homeworks
+    }
+
+    fetchPubHw(params).then(res => {
+      console.log(res);
+    })
   }
 
   const handleReset = () => {}
