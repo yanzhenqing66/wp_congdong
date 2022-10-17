@@ -1,17 +1,21 @@
 <template>
   <view class="hwdetail">
     <com-title>作业详情</com-title>
-    <HomeworkItem />
+    <HomeworkItem :data='hwInfo' />
     <view class="hwdetail_tab uni-mt-8">
       <uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" styleType="text">
       </uni-segmented-control>
     </view>
     <view class="content uni-mt-8">
       <view v-show="current === 0">
-        <HomeworkItemDetail :current='current' />
+        <template v-for="i in unSubhwDetList" :key="i.id">
+          <HomeworkItemDetail :current='current' :data="i" />
+        </template>
       </view>
       <view v-show="current === 1">
-        <HomeworkItemDetail :current='current' />
+        <template v-for="i in hwDetList" :key="i.id">
+          <HomeworkItemDetail :current='current' :data='i' />
+        </template>
       </view>
     </view>
   </view>
@@ -19,18 +23,50 @@
 
 <script setup>
   import {
+    onLoad
+  } from '@dcloudio/uni-app'
+  import {
     ref,
-    reactive
+    onMounted
   } from 'vue'
+  import {
+    fetchHwDetStuList
+  } from '@/api/path/teach.js'
   import HomeworkItem from '@/components/teach/homework-item'
   import HomeworkItemDetail from '@/components/teach/homework-item-detail.vue'
 
+  const items = ['未交作业', '已交作业']
   const current = ref(0)
+  const homeworkId = ref()
+  const hwInfo = ref({})
+  const unSubhwDetList = ref([])
+  const SubhwDetList = ref([])
 
-  const items = reactive(['未交作业', '已交作业'])
+  onLoad((options) => {
+    homeworkId.value = options.homeworkId
+  })
+
+  onMounted(() => {
+    getHwDetStuList()
+  })
 
   const onClickItem = val => {
     current.value = val.currentIndex
+  }
+
+  const getHwDetStuList = () => {
+    fetchHwDetStuList({
+      homeworkId: homeworkId.value
+    }).then(res => {
+      hwInfo.value = {
+        id: res.id,
+        title: res.title,
+        createTime: res.createTime,
+        content: res.content
+      }
+      unSubhwDetList.value = res.unSubmitStudents
+      SubhwDetList.value = res.submitStudents
+    })
   }
 </script>
 

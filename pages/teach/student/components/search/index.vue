@@ -21,11 +21,12 @@
   } from 'vue'
   import {
     formatDate,
-    formatStr
+    formatStr,
+    getCurDay
   } from '@/libs/day.js'
 
   const search = ref('')
-  const date = ref(Date.now())
+  const date = ref(getCurDay())
 
   const emit = defineEmits(['handleSearch', 'handleDate'])
 

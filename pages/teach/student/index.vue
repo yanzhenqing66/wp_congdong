@@ -26,7 +26,7 @@
   import StuList from './components/stu-list'
 
   const query = ref(null)
-  const listData = reactive([])
+  const listData = ref([])
 
   const handleDate = () => {
     getStulist()
@@ -53,8 +53,7 @@
     }
     fetchStuList(params).then(res => {
       const data = res || []
-      listData.length = 0
-      listData.push(...data)
+      listData.value = data
     })
   }
 </script>

@@ -32,6 +32,12 @@ export function formatDate(date) {
   }
 }
 
+export function getCurDay() {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return today.getTime()
+}
+
 export function formatStr(str) {
   if (!str) return
   if (str.toString().length < 2) {

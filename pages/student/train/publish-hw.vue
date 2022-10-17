@@ -5,14 +5,14 @@
       <view class="pub-hw uni-px-8">
         <com-head-goal></com-head-goal>
         <view class="pub-hw_publish">
-          <view class="video"></view>
+          <video class="video" src="" controls></video>
           <view class="pub-time uni-mt-8">作业发布时间：2022/09/30 22:00</view>
         </view>
         <view class="border-line uni-my-8"></view>
         <view class="pub-hw_stu-up">
           <text class="bold">我上传的视频</text>
-          <view class="video"></view>
-          <view class="upload flex-center uni-primary-bg uni-radius-lg">
+          <video class="video" :src="videoSrc" controls v-show='videoSrc'></video>
+          <view v-show='!videoSrc' class="upload flex-center uni-primary-bg uni-radius-lg" @click="handleSelect">
             <view>
               <uni-icons type="videocam" size="50" color="#fff"></uni-icons>
               <view class="upload_text">上传或拍摄训练视频</view>
@@ -28,6 +28,69 @@
   </com-stu-layout>
 </template>
 <script setup>
+  import {
+    ref,
+    watch
+  } from 'vue'
+  import {
+    uploadVideo
+  } from '@/api/path/student.js'
+
+  const videoSrc = ref('')
+
+  const handleSelect = () => {
+    uni.chooseVideo({
+      sourceType: ['camera', 'album'],
+      compressed: true,
+      success: function(res) {
+        uploadFile(res.tempFilePath)
+      }
+    })
+  }
+
+  const uploadFile = (tempFilePath) => {
+    console.log(tempFilePath);
+    uni.showLoading({
+      title: '上传进度：0%',
+      mask: true //是否显示透明蒙层，防止触摸穿透
+    })
+    const uploadTask = uni.uploadFile({
+      url: 'http://82.157.232.47:8080/cos/upload', //开发者服务器地址
+      filePath: tempFilePath, //要上传文件资源的路径（本地路径）
+      name: 'file', //文件对应key,开发者在服务端可以通过这个 key 获取文件的二进制内容
+      header: {
+        "Content-Type": "multipart/form-data",
+      },
+      success: function(res) {
+        const data = JSON.parse(res.data).data
+        videoSrc.value = data.url
+        uni.hideLoading()
+        uni.showToast({
+          title: '上传成功',
+          icon: 'success'
+        })
+      },
+      fail: function() {
+        // fail
+        uni.hideLoading()
+        uni.showToast({
+          title: '上传失败',
+          icon: 'none'
+        })
+      },
+    })
+
+    //监听上传进度变化事件
+    uploadTask.onProgressUpdate((res) => {
+      uni.showLoading({
+        title: '上传进度：' + res.progress + '%',
+        mask: true //是否显示透明蒙层，防止触摸穿透
+      })
+      console.log("上传进度", res.progress)
+      console.log("已经上传的数据长度，单位 Bytes:", res.totalBytesSent)
+      console.log("预期需要上传的数据总长度，单位 Bytes:", res.totalBytesExpectedToSend)
+    })
+  }
 </script>
 
 <style lang="scss" scoped>

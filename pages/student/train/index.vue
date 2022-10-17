@@ -6,28 +6,15 @@
           styleType="button" activeColor="#fff">
         </uni-segmented-control>
       </view>
-      <view v-show="trainMCur === 0">
-        <view class="train_submit uni-mt-12">
-          <uni-segmented-control :current="isSubmitCur" :values="isSubmitList" @clickItem="handleIsSubmitChange"
-            styleType="text"></uni-segmented-control>
-        </view>
-        <view class="uni-mt-12">
-          <com-date-picker @handleDate='handleDate' />
-        </view>
-      </view>
-      <view class="uni-my-12">
-        <com-cur-date color='#fff' :curDate='curDate' />
-      </view>
       <view class="content">
         <view v-show="trainMCur === 0">
-          <template v-for="i in 10" :key="i">
-            <TrainHw />
-          </template>
+          <TrainHw />
         </view>
         <view v-show="trainMCur === 1">
-          <template v-for="i in 10" :key="i">
-            <PrivateTeach />
-          </template>
+          <view class="uni-mt-15">
+            <com-button type="primary" width='184rpx' height='51rpx' className='uni-radius-pill'>我想约课</com-button>
+          </view>
+          <PrivateTeach />
         </view>
       </view>
     </view>
@@ -42,17 +29,10 @@
     reactive
   } from 'vue'
   const trainMethods = reactive(['作业', '私教'])
-  const isSubmitList = reactive(['未提交', '已提交'])
   const trainMCur = ref(0)
-  const isSubmitCur = ref(0)
-  const curDate = ref()
 
   const handleTrainMethodsChange = (e) => {
     trainMCur.value = e.currentIndex
-  }
-  const handleIsSubmitChange = (e) => {
-    if (!e?.currentIndex) return
-    isSubmitCur.value = e.currentIndex
   }
 
   const handleDate = (val) => {
@@ -75,12 +55,6 @@
         .segmented-control__text {
           color: $uni-color-primary !important;
         }
-      }
-    }
-
-    &_submit {
-      ::v-deep.segmented-control__text {
-        color: $uni-text-color-inverse !important;
       }
     }
   }

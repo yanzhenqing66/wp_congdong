@@ -4,7 +4,7 @@
     'warning': type === 'warning'},
     'base',
     className
-  ]" @click='click' :style='{width: width, height: height}'>
+  ]" @click='click' :style='{width: width, height: height}' :disabled="disabled">
     <slot></slot>
   </button>
 </template>
@@ -21,7 +21,8 @@
     },
     className: String,
     width: String,
-    height: String
+    height: String,
+    disabled: Boolean
   })
 
   const emit = defineEmits(['click'])

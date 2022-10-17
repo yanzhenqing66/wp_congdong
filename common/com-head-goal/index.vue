@@ -1,16 +1,12 @@
 <template>
   <view class='stu_no'>
-    <text>作业目标: <text class="blod">{{goal}}</text></text>
+    <text>
+      <slot />
+    </text>
   </view>
 </template>
 
 <script setup>
-  const props = defineProps({
-    goal: {
-      type: String,
-      default: '体前变向运球练习'
-    }
-  })
 </script>
 
 <style scoped lang="scss">

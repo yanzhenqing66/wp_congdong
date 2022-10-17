@@ -2,6 +2,10 @@
   <com-teach-layout curPath='/pages/teach/hw/index'>
     <view class="homework">
       <view class="homework_top">
+        <view class="class='uni-pa-19'">
+          <uni-datetime-picker type="date" return-type="timestamp" :clear-icon="false" v-model="date"
+            @change="handleDateChange" />
+        </view>
         <com-button size='mini' type='warning' className='homework_publish uni-radius-pill uni-mt-15' width='444rpx'
           height='67rpx'>
           发布作业</com-button>
@@ -13,15 +17,19 @@
 
       <view class="uni-pa-19 uni-mt-14">
         <view v-show="currentIndex === 0">
-          <view v-for="i in 50" :key="i" class='homework_con_item'>
-            <HomeworkItem :handleBtn='true' />
+          <view v-for="i in hwList" :key="i.id" class='homework_con_item'>
+            <HomeworkItem :handleBtn='true' :data='i' />
           </view>
         </view>
         <view v-show="currentIndex === 1">
-          选项卡2的内容
+          <view v-for="i in hwList" :key="i.id" class='homework_con_item'>
+            <HomeworkItem :handleBtn='true' :data='i' />
+          </view>
         </view>
         <view v-show="currentIndex === 2">
-          选项卡3的内容
+          <view v-for="i in hwList" :key="i.id" class='homework_con_item'>
+            <HomeworkItem :handleBtn='true' :data='i' />
+          </view>
         </view>
       </view>
     </view>
@@ -33,14 +41,44 @@
 
   import {
     ref,
-    reactive
+    onMounted
   } from 'vue'
+  import {
+    fetchHwList
+  } from '@/api/path/teach.js'
+  import {
+    getCurDay
+  } from '@/libs/day.js'
 
   const currentIndex = ref(0)
-  const items = reactive(['默认时间', '尚未提交', '尚未点评'])
+  const items = ['默认时间', '尚未提交', '尚未点评']
+  const date = ref(getCurDay())
+  const hwList = ref([])
+
+  const user = uni.getStorageSync('user')
+
+  const handleDateChange = (val) => {
+    date.value = val
+    getHwList()
+  }
+
+  onMounted(() => {
+    getHwList()
+  })
 
   const onClickItem = (val) => {
     currentIndex.value = val.currentIndex
+    getHwList()
+  }
+
+  const getHwList = () => {
+    fetchHwList({
+      teacherId: user.id,
+      date: date.value,
+      type: currentIndex.value === 1 ? 1 : (currentIndex.value === 2 ? 2 : '')
+    }).then(res => {
+      hwList.value = res
+    })
   }
 </script>
 

@@ -1,34 +1,38 @@
 <template>
   <view class="container">
     <view class="publish">
-      <!-- <UserHead :data='stuDetail.data' /> -->
+      <UserHead :data='stuDetail' />
       <view class="publish_edit">编辑作业信息</view>
       <view class="publish_calendar">
-        <uni-calendar v-model="form.hwDate" :start-date="startDate" :insert="true" range :showMonth="false"
+        <uni-calendar v-model="form.homeworkDate" :date="formatDate(initDate || Date.now()).fullDate"
+          :start-date="formatDate(Date.now()).fullDate" :insert="true" range :showMonth="false"
           @change="handleDateChange" />
       </view>
       <view class="publish_select">
-        <uni-data-select v-model="form.train" :localdata="trainGoalList" @change="handleTrainChange" placeholder="作业目标">
+        <uni-data-select v-model="form.homeworkTemplateId" :localdata="trainGoalList" @change="handleTrainChange"
+          placeholder="作业目标">
         </uni-data-select>
         <view class="seat"></view>
-        <uni-easyinput trim="all" v-model="form.actionPoint" placeholder="动作要点" disabled></uni-easyinput>
+        <uni-easyinput trim="all" v-model="form.content" placeholder="动作要点" @change="actionChange"></uni-easyinput>
         <view class="seat"></view>
-        <view class="publish_select_content uni-mb-8" v-for="item in tempDetailList" :key="item.id">
-          <view class="title uni-primary-bg flex-center max-1-line">
-            <uni-icons type="closeempty" color="#fff" size="22rpx" class="uni-mt-1 uni-mr-1"
-              @click="delHwVideo(item.id)"></uni-icons>
-            <text>{{item.content}}</text>
-          </view>
-          <view class="video uni-warning-bg uni-mx-4 flex-center">
-            <uni-icons type="videocam" color="#fff" size="25rpx" class="uni-mt-1"></uni-icons>
-            <text>动作示范视频</text>
-          </view>
-          <view class="amount">
-            <uni-number-box v-model='item.sets' :min="1" :max="100" @change='v => amountChange(item.id, v)' />
-            <text class="amount_unit uni-primary-bg flex-center">组</text>
+        <view v-if="tempDetailList.length">
+          <view class="publish_select_content uni-mb-8" v-for="item in tempDetailList" :key="item.id">
+            <view class="title uni-primary-bg flex-center max-1-line">
+              <uni-icons type="closeempty" color="#fff" size="22rpx" class="uni-mt-1 uni-mr-1"
+                @click="delHwVideo(item.id)"></uni-icons>
+              <text>{{item.content}}</text>
+            </view>
+            <view class="video uni-warning-bg uni-mx-4 flex-center">
+              <uni-icons type="videocam" color="#fff" size="25rpx" class="uni-mt-1"></uni-icons>
+              <text>动作示范视频</text>
+            </view>
+            <view class="amount">
+              <uni-number-box v-model='item.sets' :min="1" :max="100" @change='v => amountChange(item.id, v)' />
+              <text class="amount_unit uni-primary-bg flex-center">组</text>
+            </view>
           </view>
         </view>
-        <com-button v-show='form.train' type='primary' @click='addHwContent'>+ 继续添加作业内容</com-button>
+        <com-button v-show='form.homeworkTemplateId' type='primary' @click='addHwContent'>+ 继续添加作业内容</com-button>
         <view class="border-line uni-my-14"></view>
         <view class="publish_select_btn">
           <com-button type="primary" size="mini" width="235rpx" height="67rpx" @click="handleReset">重置内容</com-button>
@@ -51,7 +55,6 @@
   } from 'vue'
   import {
     onLoad,
-    onShow
   } from '@dcloudio/uni-app'
   import {
     formatDate
@@ -60,44 +63,65 @@
     fetchStuDetail,
     fetchHwTemp,
     fetchHwTempDetail,
-    fetchPubHw
+    fetchPubHw,
+    fetchHwDetal
   } from '@/api/path/teach.js'
   import UserHead from '@/components/teach/user-head'
   import TempList from './temp-list'
 
-  const trainGoalList = reactive([])
+  const user = uni.getStorageSync('user')
+  const trainGoalList = reactive([]) // 作业目标选项
+  const initDetail = ref({})
 
   const form = reactive({
-    hwDate: null,
-    train: '',
-    actionPoint: '',
+    homeworkDate: null, // 日期
+    homeworkTemplateId: '', // 作业目标
+    content: '', // 动作要点
     studentId: ''
   })
+  const tempDetailList = ref([]) // 模版视频详情
 
-  const stuDetail = reactive({
-    data: {}
-  })
-
-  const tempDetailList = ref([])
-
+  const type = ref('')
+  const stuDetail = ref({})
   const tempPopup = ref()
-
-  const startDate = computed(() => {
-    return formatDate(Date.now()).fullDate
-  })
+  const initDate = ref(null)
+  const startDate = computed(() => formatDate(Date.now()).fullDate)
 
   onLoad((option) => {
+    // console.log(option);
+    type.value = option.type
     form.studentId = option.studentId
   })
 
   onMounted(() => {
     getStuDetail()
     getHwTemp()
+    if (type.value === '2') {
+      init()
+    }
   })
 
+  const init = () => {
+    const params = {
+      teacherId: user.id,
+      studentId: form.studentId
+    }
+    fetchHwDetal(params).then(res => {
+      const data = res.data[0]
+      initDate.value = data.homeworkDate
+      form.homeworkTemplateId = data.homeworkTemplateId
+      form.content = data.content
+      tempDetailList.value = data.homeworkDetailVos
+    })
+  }
+
   const getStuDetail = () => {
-    fetchStuDetail(form.studentId).then(res => {
-      stuDetail.data = res.data
+    const params = {
+      studentId: form.studentId,
+      teacherId: user.id
+    }
+    fetchStuDetail(params).then(res => {
+      stuDetail.value = res.data
     })
   }
 
@@ -119,10 +143,14 @@
   }
 
   const handleTrainChange = (val) => {
-    form.train = val
+    form.homeworkTemplateId = val
     const content = trainGoalList.find(item => item.value === val).content
-    form.actionPoint = content
+    form.content = content
     getTempDetail(val)
+  }
+
+  const actionChange = val => {
+    form.content = val
   }
 
   const updTempDetal = (data) => {
@@ -151,19 +179,17 @@
   }
 
   const handleDateChange = (val) => {
-    form.hwDate = val
+    form.homeworkDate = val
   }
 
   const handlePubHw = () => {
     if (!tempDetailList.value.length) return
     const hwTempIds = tempDetailList.value.map(item => item.id)
 
-    console.log(hwTempIds);
-
     let homeworkDate
-    if (form.hwDate) {
-      const range = form.hwDate.range.data
-      const fulldate = form.hwDate.fulldate
+    if (form.homeworkDate) {
+      const range = form.homeworkDate.range.data
+      const fulldate = form.homeworkDate.fulldate
       if (range.length > 1) {
         homeworkDate = range.map(item => {
           return new Date(item.replace(/-/g, '/')).getTime()
@@ -181,30 +207,48 @@
       homeworks = [{
         studentId: form.studentId,
         homeworkDate: homeworkDate,
-        homeworkTemplateId: form.train,
+        homeworkTemplateId: form.homeworkTemplateId,
+        content: form.content,
         homeworkDetailTemplateId: hwTempIds
       }]
     } else {
       homeworks = homeworkDate.map(item => ({
         studentId: form.studentId,
         homeworkDate: item,
-        homeworkTemplateId: form.train,
+        homeworkTemplateId: form.homeworkTemplateId,
+        content: form.content,
         homeworkDetailTemplateId: hwTempIds
       }))
     }
 
     // if(range)
     const params = {
-      teacherId: uni.getStorageSync('user')?.id,
+      teacherId: user.id,
       homeworks
     }
 
     fetchPubHw(params).then(res => {
-      console.log(res);
+      if (res.code === 100000) {
+        uni.showToast({
+          title: '发布成功'
+        })
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 1500)
+      } else {
+        uni.showToast({
+          title: '发布失败,请重试'
+        })
+      }
     })
   }
 
-  const handleReset = () => {}
+  const handleReset = () => {
+    form.homeworkDate = null
+    form.homeworkTemplateId = ''
+    form.content = ''
+    tempDetailList.value = []
+  }
 </script>
 
 <style lang="scss" scoped>

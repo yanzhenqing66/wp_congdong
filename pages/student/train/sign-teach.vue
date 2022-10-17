@@ -3,17 +3,23 @@
     <com-title bgColor='#F5A33B'>签约教练</com-title>
     <view class="sign">
       <com-head-goal></com-head-goal>
-      <TeachHead />
+      <TeachHead :data='courseDetail' />
       <view class="border-line uni-my-12"></view>
       <view>
-        <view class="sign_price-item">
+        <view class="sign_price-item uni-mb-12" v-for="item in courseDetail.courseDetailList" :key='item.id'>
+          <view class="name">
+            <text class="text">
+              {{item.name}}
+            </text>
+            <view class="origin-price">原价: <text class="price">¥{{item.originalPrice}}</text></view>
+          </view>
           <view class="price uni-pr-12">
             <view>
               <view>
                 <text class="duration">3个月 / <text class="uni-primary">¥</text></text>
-                <text class="price_cur">1298</text>
+                <text class="price_cur">{{item.actualPrice}}</text>
               </view>
-              <view class="price_deduct">最高抵扣学分：699学分</view>
+              <view class="price_deduct">最高抵扣学分：{{item.maximumDeduct}}学分</view>
             </view>
           </view>
         </view>
@@ -23,7 +29,32 @@
 </template>
 
 <script setup>
+  import {
+    onLoad
+  } from '@dcloudio/uni-app'
+  import {
+    ref,
+    onMounted
+  } from 'vue'
+  import {
+    fetchCourseDetail
+  } from '@/api/path/student.js'
   import TeachHead from './components/teach-head.vue'
+
+  const teacherId = ref()
+  const courseDetail = ref({})
+
+  onLoad((options) => {
+    teacherId.value = options.teacherId
+  })
+
+  onMounted(() => {
+    fetchCourseDetail({
+      teacherId: teacherId.value
+    }).then(res => {
+      courseDetail.value = res
+    })
+  })
 </script>
 
 <style lang="scss" scoped>
@@ -40,9 +71,36 @@
       height: 150rpx;
       border-radius: 6px;
       border: 2px solid $uni-color-primary;
+      display: flex;
+      justify-content: space-between;
+
+      .name {
+        .text {
+          padding: 0 20rpx;
+          background-color: #F4A138;
+          border-radius: 4px 0 0 0;
+          color: #fff;
+        }
+
+        .origin-price {
+          display: flex;
+          align-items: center;
+          font-size: $uni-font-size-sm;
+          margin-top: 30rpx;
+          margin-left: 12rpx;
+
+          .price {
+            margin-left: 5rpx;
+            font-size: $uni-font-size-lg;
+            color: #EA5539;
+            font-weight: bold;
+            text-decoration: line-through;
+          }
+        }
+      }
 
       .price {
-        width: 100%;
+        // width: 100%;
         height: 100%;
         display: flex;
         justify-content: flex-end;

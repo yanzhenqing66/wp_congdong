@@ -8,7 +8,7 @@
         <text class="stu_detail_info_time">签约时间： {{curDate(data.startTime, data.endTime)}}</text>
       </view>
     </view>
-    <view class="border-line uni-my-12"></view>
+    <!-- <view class="border-line uni-my-12"></view> -->
   </view>
 </template>
 
@@ -20,13 +20,16 @@
   import {
     formatDate
   } from '@/libs/day.js'
-  const props = defineProps({
+
+  defineProps({
     data: Object,
     default: {}
   })
 
-  const curDate = (start, end) => computed(() => formatDate(start).year + formatDate(start).formatMM + formatDate(start)
-    .formatDD + ' - ' + formatDate(end).year + formatDate(end).formatMM + formatDate(end).formatDD)
+  const curDate = (start, end) => {
+    return formatDate(start).year + formatDate(start).formatMM + formatDate(start)
+      .formatDD + ' - ' + formatDate(end).year + formatDate(end).formatMM + formatDate(end).formatDD
+  }
 </script>
 
 <style lang="scss" scoped>
