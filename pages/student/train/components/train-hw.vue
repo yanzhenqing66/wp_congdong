@@ -83,10 +83,10 @@
 
 
   const handlePublishHw = (item) => {
-    console.log(item);
-    // uni.navigateTo({
-    //   url: '/pages/student/train/publish-hw'
-    // })
+    // console.log(item);
+    uni.navigateTo({
+      url: `/pages/student/train/publish-hw?id=${item.id}`
+    })
   }
 </script>
 

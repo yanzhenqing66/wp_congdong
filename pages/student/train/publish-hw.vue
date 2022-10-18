@@ -1,11 +1,11 @@
 <template>
   <com-stu-layout>
     <view class="pub-hw-box">
-      <com-cur-date color='#fff'></com-cur-date>
+      <com-cur-date color='#fff'>作业目标: {{data.homeworkTitle}}</com-cur-date>
       <view class="pub-hw uni-px-8">
         <com-head-goal></com-head-goal>
         <view class="pub-hw_publish">
-          <video class="video" src="" controls></video>
+          <video class="video" :src="data.studyVideoUrl" controls></video>
           <view class="pub-time uni-mt-8">作业发布时间：2022/09/30 22:00</view>
         </view>
         <view class="border-line uni-my-8"></view>
@@ -20,7 +20,8 @@
           </view>
         </view>
         <view class="pub-hw_submit uni-mt-8">
-          <com-button type='primary' className='uni-radius-pill' size='mini' width='252rpx' height='52rpx'>确认提交
+          <com-button type='primary' className='uni-radius-pill' size='mini' width='252rpx' height='52rpx'
+            @click='handleSubmit'>确认提交
           </com-button>
         </view>
       </view>
@@ -29,14 +30,41 @@
 </template>
 <script setup>
   import {
+    onLoad
+  } from '@dcloudio/uni-app'
+  import {
     ref,
-    watch
+    onMounted
   } from 'vue'
   import {
-    uploadVideo
+    uploadVideo,
+    fetchHwDetail,
+    submitHw
   } from '@/api/path/student.js'
 
+  const id = ref('')
   const videoSrc = ref('')
+  const videoId = ref('')
+  const data = ref({})
+
+  onLoad(options => {
+    id.value = options.id
+  })
+
+  onMounted(() => {
+    fetchHwDetail(id.value).then(res => {
+      data.value = res
+    })
+  })
+
+  const handleSubmit = () => {
+    const params = {
+      studentId: data.value.studentId,
+      teacherId: data.value.teacherId,
+      homeworkStudentDetailId: data.value.id,
+      videoId: videoId.value
+    }
+  }
 
   const handleSelect = () => {
     uni.chooseVideo({
@@ -49,7 +77,6 @@
   }
 
   const uploadFile = (tempFilePath) => {
-    console.log(tempFilePath);
     uni.showLoading({
       title: '上传进度：0%',
       mask: true //是否显示透明蒙层，防止触摸穿透
@@ -64,6 +91,7 @@
       success: function(res) {
         const data = JSON.parse(res.data).data
         videoSrc.value = data.url
+        videoId.value = data.id
         uni.hideLoading()
         uni.showToast({
           title: '上传成功',
@@ -86,9 +114,6 @@
         title: '上传进度：' + res.progress + '%',
         mask: true //是否显示透明蒙层，防止触摸穿透
       })
-      console.log("上传进度", res.progress)
-      console.log("已经上传的数据长度，单位 Bytes:", res.totalBytesSent)
-      console.log("预期需要上传的数据总长度，单位 Bytes:", res.totalBytesExpectedToSend)
     })
   }
 </script>
@@ -97,6 +122,7 @@
   .pub-hw-box {
     width: 675rpx;
     margin: 0 auto;
+    padding-top: 30rpx;
   }
 
   .pub-hw {
@@ -141,7 +167,8 @@
 
     &_submit {
       width: 100%;
-      text-align: right;
+      display: flex;
+      justify-content: flex-end;
     }
   }
 </style>

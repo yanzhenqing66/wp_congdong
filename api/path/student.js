@@ -6,6 +6,12 @@ import {
 // 课程列表
 export const fetchStuHwList = (params) => get(`student/homeworkStudentDetailList`, params)
 
+// 课程列表详情
+export const fetchHwDetail = id => get(`student/getHomeworkStudentDetail?id=${id}`)
+
+// 提交课程
+export const submitHw = (params) => post('student/uploadHomeworkVideo', params)
+
 // 私教列表
 export const fetchTeachCourseList = params => get('student/teacherList', params)
 
