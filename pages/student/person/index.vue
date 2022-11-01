@@ -1,33 +1,21 @@
 <template>
   <com-stu-layout headShow>
     <view class="uni-px-12">
-      <view class="preson_info flex flex-bewteen">
-        <view class="flex">
-          <com-image src='' alt='' width='122rpx' height='121rpx' className='uni-radius-pill'></com-image>
-          <view class="flex flex-col flex-evenly uni-ml-8">
-            <text class="text-lg">戴永名</text>
-            <text class="grey text-sm">学号：000000</text>
-          </view>
-        </view>
-        <view class="flex flex-col flex-evenly preson_info_assets">
-          <text class="grey text-sm">点击查看我的资产明细</text>
-          <view class="mark bold">90000</view>
-        </view>
-      </view>
+      <PersonHeader />
       <view class="preson_course uni-mt-8">
         <view class="bold text-lg">累计训练</view>
         <view class="border-line uni-my-14"></view>
         <view class="preson_course_mark flex flex-bewteen">
           <view class="train-days flex-center">
             <view class="mark-box flex-center flex-col">
-              <text class="days">999</text>
+              <text class="days">{{userInfo.totalTrain}}</text>
               <text>累计训练</text>
               <text class="text-sm">(天)</text>
             </view>
           </view>
           <view class="comment-num flex-center">
             <view class="mark-box flex-center flex-col">
-              <text class="num">999</text>
+              <text class="num">{{userInfo.totalShare}}</text>
               <text>获得点评</text>
               <text class="text-sm">(次)</text>
             </view>
@@ -36,7 +24,7 @@
         <view class="border-line uni-my-14"></view>
       </view>
       <view class="person_more uni-mt-8">
-        <view class="flex flex-bewteen flex-align-center">
+        <view class="flex flex-bewteen flex-align-center" @click="handleGoOrder">
           <view class="text-lg flex-align-center">
             <uni-icons type='cart' size='23' class='uni-mr-7'></uni-icons>
             购买记录
@@ -45,12 +33,12 @@
         </view>
         <view class="border-line uni-my-14"></view>
         <view>
-          <view class="flex flex-bewteen">
+          <view class="flex flex-bewteen" v-for="item in userInfo.customers" :key="item">
             <view class="text-lg flex-align-center">
               <uni-icons type='headphones' size='23' class='uni-mr-7'></uni-icons>
               客服微信
             </view>
-            <text class="uni-primary bold text-lg">15800291199</text>
+            <text class="uni-primary bold text-lg">{{item}}</text>
           </view>
         </view>
       </view>
@@ -58,7 +46,37 @@
   </com-stu-layout>
 </template>
 
-<script>
+<script setup>
+  import {
+    ref,
+    onMounted
+  } from 'vue'
+  import {
+    fetchPresonData
+  } from '@/api/path/student.js'
+  import PersonHeader from './components/header.vue'
+
+  const user = uni.getStorageSync('user')
+
+  const userInfo = ref({})
+
+  onMounted(() => {
+    fetchPresonData(user.id).then(res => {
+      userInfo.value = res
+    })
+  })
+
+  const handleGoScore = () => {
+    uni.navigateTo({
+      url: './score'
+    })
+  }
+
+  const handleGoOrder = () => {
+    uni.navigateTo({
+      url: './order'
+    })
+  }
 </script>
 
 <style lang="scss" scoped>

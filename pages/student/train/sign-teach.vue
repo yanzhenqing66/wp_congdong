@@ -6,7 +6,9 @@
       <TeachHead :data='courseDetail' />
       <view class="border-line uni-my-12"></view>
       <view>
-        <view class="sign_price-item uni-mb-12" v-for="item in courseDetail.courseDetailList" :key='item.id'>
+        <view class="sign_price-item uni-mb-12" v-for="item in courseDetail.courseDetailList" :key='item.id'
+          @click="handleDoOrder(item)"
+          :style="{border: (orderInfo.id === item.id ? '2px solid #007aff' : '2px solid #ccc')}">
           <view class="name">
             <text class="text">
               {{item.name}}
@@ -24,6 +26,10 @@
           </view>
         </view>
       </view>
+      <view class="flex-center">
+        <com-button type='primary' className='uni-radius-pill' width='358rpx' height='74rpx' @click='handlePay'>确定支付
+        </com-button>
+      </view>
     </view>
   </com-stu-layout>
 </template>
@@ -37,16 +43,37 @@
     onMounted
   } from 'vue'
   import {
-    fetchCourseDetail
+    fetchCourseDetail,
+    createOrder
   } from '@/api/path/student.js'
   import TeachHead from './components/teach-head.vue'
 
+  const user = uni.getStorageSync('user')
   const teacherId = ref()
   const courseDetail = ref({})
+
+  const orderInfo = ref({})
 
   onLoad((options) => {
     teacherId.value = options.teacherId
   })
+
+  const handleDoOrder = (info) => {
+    orderInfo.value = info
+  }
+
+  const handlePay = () => {
+    const params = {
+      studentId: user.id,
+      teacherId: teacherId.value,
+      courseId: orderInfo.value.courseId,
+      teacherCourseId: orderInfo.value.id,
+      contractType: 20
+    }
+    createOrder(params).then(res => {
+      console.log(res);
+    })
+  }
 
   onMounted(() => {
     fetchCourseDetail({
@@ -70,9 +97,10 @@
       width: 100%;
       height: 150rpx;
       border-radius: 6px;
-      border: 2px solid $uni-color-primary;
+      border: 2px solid #ccc;
       display: flex;
       justify-content: space-between;
+      cursor: pointer;
 
       .name {
         .text {

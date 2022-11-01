@@ -6,7 +6,9 @@
         <com-head-goal></com-head-goal>
         <view class="pub-hw_publish">
           <video class="video" :src="data.studyVideoUrl" controls></video>
-          <view class="pub-time uni-mt-8">作业发布时间：2022/09/30 22:00</view>
+          <view class="pub-time uni-mt-8">
+            作业发布时间：{{formatDate(data.createTime).year+'/'+formatDate(data.createTime).formatMM+'/'+ formatDate(data.createTime).formatDD+ ' ' + formatDate(data.createTime).hour+':'+formatDate(data.createTime).minute}}
+          </view>
         </view>
         <view class="border-line uni-my-8"></view>
         <view class="pub-hw_stu-up">
@@ -19,7 +21,7 @@
             </view>
           </view>
         </view>
-        <view class="pub-hw_submit uni-mt-8">
+        <view class="pub-hw_submit uni-mt-8" v-if="status">
           <com-button type='primary' className='uni-radius-pill' size='mini' width='252rpx' height='52rpx'
             @click='handleSubmit'>确认提交
           </com-button>
@@ -41,11 +43,15 @@
     fetchHwDetail,
     submitHw
   } from '@/api/path/student.js'
+  import {
+    formatDate
+  } from '@/libs/day.js'
 
   const id = ref('')
   const videoSrc = ref('')
   const videoId = ref('')
   const data = ref({})
+  const status = ref(true)
 
   onLoad(options => {
     id.value = options.id
@@ -54,16 +60,40 @@
   onMounted(() => {
     fetchHwDetail(id.value).then(res => {
       data.value = res
+      if (res.recordVideoUrl) {
+        videoSrc.value = res.recordVideoUrl
+        status.value = false
+      }
     })
   })
 
   const handleSubmit = () => {
+    if (!videoId.value) {
+      uni.showToast({
+        icon: 'none',
+        title: '请先上传视频'
+      })
+      return
+    }
     const params = {
       studentId: data.value.studentId,
       teacherId: data.value.teacherId,
       homeworkStudentDetailId: data.value.id,
       videoId: videoId.value
     }
+    submitHw(params).then(res => {
+      status.value = false
+      console.log(status.value);
+      uni.showToast({
+        icon: 'success',
+        title: '作业提交成功'
+      })
+    }).catch(err => {
+      uni.showToast({
+        icon: 'error',
+        title: '作业提交失败, 请重试'
+      })
+    })
   }
 
   const handleSelect = () => {

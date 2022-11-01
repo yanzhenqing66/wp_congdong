@@ -31,3 +31,9 @@ export const fetchHwDetStuList = params => get(`teacher/homeworkStudent`, params
 
 // 列表进详情回显
 export const fetchHwDetal = params => get('teacher/homework', params)
+
+// 评分接口
+export const reviewScore = params => post(`teacher/score`, params)
+
+// 视频回显
+export const fetchStuHwVideoList = id => get(`teacher/homeworkVideoRecordList?studentId=${id}`)

@@ -23,6 +23,9 @@
 
 
   const login = () => {
+    uni.showToast({
+      icon: 'loading'
+    })
     uni.login({
       provider: 'weixin',
     }).then(res => {
@@ -32,8 +35,10 @@
 
   const goUser = (code) => {
     userLogin(code).then(result => {
+      uni.showToast({
+        icon: 'success'
+      })
       if (result.data) {
-        console.log(result.data)
         uni.setStorageSync('token', result.data.maOpenid)
         uni.setStorageSync('user', result.data)
         if (result.data.userType === 2) {

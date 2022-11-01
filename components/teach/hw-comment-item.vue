@@ -11,10 +11,10 @@
     <view class="border-line uni-my-10"></view>
     <view class="hwCItem_handle">
       <view class="inline">
-        <uni-number-box />
+        <uni-number-box :min="1" :max="10" v-model="score" />
         <text class="hwCItem_handle_mark">分</text>
       </view>
-      <com-button size='mini' type='warning' className='uni-radius-pill'>评分</com-button>
+      <com-button size='mini' type='warning' className='uni-radius-pill' @click="handleRwScore">评分</com-button>
       <com-button size='mini' type='primary' className='uni-radius-pill' @click='handleComment'>在线点评</com-button>
     </view>
     <view class="hwCItem_comment" v-show="commentFlag"></view>
@@ -23,9 +23,38 @@
 
 <script setup>
   import {
-    ref
+    ref,
+    onMounted
   } from 'vue'
+  import {
+    reviewScore,
+    fetchStuHwVideoList
+  } from '@/api/path/teach.js'
+
+  const props = defineProps({
+    id: String
+  })
+
+  const user = uni.getStorageSync('user')
+
   const commentFlag = ref(false)
+
+  const score = ref(1)
+
+  const handleRwScore = () => {
+    reviewScore({
+      id: props.id,
+      score: score.value
+    }).then(res => {
+      console.log(res);
+    })
+  }
+
+  onMounted(() => {
+    fetchStuHwVideoList(user.id).then(res => {
+      console.log(res);
+    })
+  })
 
   const handleComment = () => {
     commentFlag.value = !commentFlag.value

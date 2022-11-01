@@ -11,8 +11,9 @@
           <TrainHw />
         </view>
         <view v-show="trainMCur === 1">
-          <view class="uni-mt-15">
-            <com-button type="primary" width='184rpx' height='51rpx' className='uni-radius-pill'>我想约课</com-button>
+          <view class="uni-mt-15 subCourse">
+            <com-button type="primary" width='184rpx' height='51rpx' className='uni-radius-pill'
+              @click='handleSubCourse'>我想约课</com-button>
           </view>
           <PrivateTeach />
         </view>
@@ -38,6 +39,12 @@
   const handleDate = (val) => {
     curDate.value = val
   }
+
+  const handleSubCourse = () => {
+    uni.navigateTo({
+      url: '/pages/student/pre-course/index'
+    })
+  }
 </script>
 
 <style scoped lang="scss">
@@ -49,6 +56,10 @@
       padding-bottom: 30rpx;
     }
 
+    .subCourse {
+      display: flex;
+      justify-content: flex-end;
+    }
 
     &_methods {
       ::v-deep.segmented-control__item--button--active {

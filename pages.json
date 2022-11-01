@@ -62,6 +62,12 @@
       }
     },
     {
+      "path": "pages/student/person/score"
+    },
+    {
+      "path": "pages/student/person/order"
+    },
+    {
       "path": "pages/student/pre-course/index",
       "style": {
         "navigationStyle": "custom"

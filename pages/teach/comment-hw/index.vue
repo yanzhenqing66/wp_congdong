@@ -11,7 +11,7 @@
       </view>
     </view>
     <view class="comment_content">
-      <HwCommentItem />
+      <HwCommentItem :id='stuDetail.id' />
     </view>
   </view>
 </template>
