@@ -6,12 +6,12 @@
       <view class="border-line uni-my-10">
       </view>
       <view>
-        <text class="mark">学生学分：32</text>
+        <text class="mark">学生学分：{{stuDetail.score}}</text>
         <!-- <com-button size='mini' type='warning'>提醒</com-button> -->
       </view>
     </view>
     <view class="comment_content">
-      <HwCommentItem :id='stuDetail.id' />
+      <HwCommentItem :id='stuDetail.id' :studentId="studentId" :homeworkVideoRecordList='homeworkVideoRecordList' />
     </view>
   </view>
 </template>
@@ -28,14 +28,15 @@
   import HwCommentItem from '@/components/teach/hw-comment-item.vue'
   import {
     fetchStuDetail,
-    fetchHwDetal
+    fetchHwDetal,
+    fetchStuHwVideoList
   } from '@/api/path/teach.js'
 
   const user = uni.getStorageSync('user')
   const studentId = ref()
   const curDate = ref()
   const stuDetail = ref({})
-  const hwList = ref([])
+  const homeworkVideoRecordList = ref([])
 
   onLoad((options) => {
     studentId.value = options.studentId
@@ -43,18 +44,9 @@
   })
 
   onMounted(() => {
-    const params = {
-      studentId: studentId.value,
-      teacherId: user.id,
-      date: curDate.value
-    }
-
-    fetchStuDetail(params).then(res => {
-      stuDetail.value = res.data
-    })
-
-    fetchHwDetal(params).then(res => {
-      hwList.value = res.data
+    fetchStuHwVideoList(studentId.value).then(res => {
+      stuDetail.value = res.userInfo
+      homeworkVideoRecordList.value = res.homeworkVideoRecordList
     })
   })
 </script>
@@ -77,6 +69,7 @@
 
     &_content {
       margin-top: 60rpx;
+      padding-bottom: 30rpx;
     }
   }
 </style>

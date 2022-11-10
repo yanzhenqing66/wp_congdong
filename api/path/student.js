@@ -53,3 +53,9 @@ export const fetchPersonScore = id => get(`student/scoreRecord?studentId=${id}`)
 
 // 订单记录
 export const fetchOrderList = id => get(`student/orderRecord?studentId=${id}`)
+
+// 分享成功
+export const fetchShareSuccess = params => post('student/share', params)
+
+// 分享 信息
+export const fetchShareVideo = id => get(`student/homeworkVideoRecord?id=${id}`)

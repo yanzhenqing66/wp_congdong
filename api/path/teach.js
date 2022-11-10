@@ -35,5 +35,8 @@ export const fetchHwDetal = params => get('teacher/homework', params)
 // 评分接口
 export const reviewScore = params => post(`teacher/score`, params)
 
+// 评论
+export const reviewComment = params => post('teacher/comment', params)
+
 // 视频回显
 export const fetchStuHwVideoList = id => get(`teacher/homeworkVideoRecordList?studentId=${id}`)

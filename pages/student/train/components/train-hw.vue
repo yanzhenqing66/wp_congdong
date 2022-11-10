@@ -22,14 +22,19 @@
       </view>
       <view class="border-line uni-my-10"></view>
       <view class="tHw_info flex flex-bewteen">
-        <text class="bold">完成组数：<text class="tHw_info_num uni-primary">{{item.sets}}</text></text>
+        <text class="bold" v-if="isSubmitCur === 0">完成组数：<text
+            class="tHw_info_num uni-primary">{{item.sets}}</text></text>
+        <text class="bold" v-else>获得学分：<text class="tHw_info_num uni-primary">{{item.score}}</text></text>
         <text class="tHw_info_publish-date">布置时间：
           {{formatDate(item.createTime).year+'/'+formatDate(item.createTime).formatMM + '/' + formatDate(item.createTime).formatDD}}</text>
       </view>
       <view class="border-line uni-my-10"></view>
       <view class="flex-center">
-        <com-button type='primary' size='mini' width='362rpx' height='51rpx' className='uni-radius-pill'
-          @click='handlePublishHw(item)'>提交视频作业
+        <com-button v-if="isSubmitCur === 0" type='primary' size='mini' width='362rpx' height='51rpx'
+          className='uni-radius-pill' @click='handlePublishHw(item)'>提交视频作业
+        </com-button>
+        <com-button v-else type='primary' size='mini' width='362rpx' height='51rpx' className='uni-radius-pill'
+          @click='handlePublishHw(item)'>查看点评
         </com-button>
       </view>
     </view>
@@ -81,7 +86,7 @@
     getStuHwList()
   })
 
-
+  // 提交视频作业 & 查看点评
   const handlePublishHw = (item) => {
     // console.log(item);
     uni.navigateTo({

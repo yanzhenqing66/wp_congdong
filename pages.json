@@ -30,6 +30,13 @@
         "navigationStyle": "custom"
       }
     },
+    // 分享
+    {
+      "path": "pages/share/stu-video",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
     // 学生端路由
     {
       "path": "pages/student/home/index",

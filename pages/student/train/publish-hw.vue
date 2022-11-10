@@ -1,20 +1,28 @@
 <template>
   <com-stu-layout>
-    <view class="pub-hw-box">
-      <com-cur-date color='#fff'>作业目标: {{data.homeworkTitle}}</com-cur-date>
+    <view class="pub-hw-box" v-if="data.id">
+      <view class="flex-bewteen">
+        <com-cur-date color='#fff'></com-cur-date>
+        <button class="uni-radius-pill uni-primary-bg" style="color: #fff;" open-type="share" size="mini">
+          转发分享
+        </button>
+      </view>
       <view class="pub-hw uni-px-8">
-        <com-head-goal></com-head-goal>
+        <com-head-goal>作业目标: {{data.homeworkTitle}}</com-head-goal>
         <view class="pub-hw_publish">
           <video class="video" :src="data.studyVideoUrl" controls></video>
-          <view class="pub-time uni-mt-8">
-            作业发布时间：{{formatDate(data.createTime).year+'/'+formatDate(data.createTime).formatMM+'/'+ formatDate(data.createTime).formatDD+ ' ' + formatDate(data.createTime).hour+':'+formatDate(data.createTime).minute}}
+          <view class="flex-bewteen flex-align-center">
+            <text class="uni-primary">教练示范视频</text>
+            <text class="pub-time uni-mt-8">
+              作业发布时间：{{formatTime(data.createTime)}}
+            </text>
           </view>
         </view>
         <view class="border-line uni-my-8"></view>
         <view class="pub-hw_stu-up">
-          <text class="bold">我上传的视频</text>
-          <video class="video" :src="videoSrc" controls v-show='videoSrc'></video>
-          <view v-show='!videoSrc' class="upload flex-center uni-primary-bg uni-radius-lg" @click="handleSelect">
+          <view class="bold uni-mb-8">我上传的视频</view>
+          <video class="video" :src="videoSrc" controls v-if='videoSrc'></video>
+          <view v-else class="upload flex-center uni-primary-bg uni-radius-lg" @click="handleSelect">
             <view>
               <uni-icons type="videocam" size="50" color="#fff"></uni-icons>
               <view class="upload_text">上传或拍摄训练视频</view>
@@ -26,13 +34,22 @@
             @click='handleSubmit'>确认提交
           </com-button>
         </view>
+        <view class="sub-info" v-if="!status">
+          <text class="score">获得学分: <text class="uni-primary">{{data.score}}</text></text>
+          <text class="date">提交时间：{{formatTime(data.submitTime)}}</text>
+        </view>
+        <view class="comment uni-mt-12" v-if="data.comments[0]">
+          <view class="uni-mb-10">老师评论: </view>
+          <text class="content">{{data.comments[0]}}</text>
+        </view>
       </view>
     </view>
   </com-stu-layout>
 </template>
 <script setup>
   import {
-    onLoad
+    onLoad,
+    onShareAppMessage
   } from '@dcloudio/uni-app'
   import {
     ref,
@@ -41,7 +58,8 @@
   import {
     uploadVideo,
     fetchHwDetail,
-    submitHw
+    submitHw,
+    fetchShareSuccess
   } from '@/api/path/student.js'
   import {
     formatDate
@@ -67,6 +85,25 @@
     })
   })
 
+  const formatTime = (date) => {
+    if (!date) return ''
+    return formatDate(date).year + '/' + formatDate(date).formatMM + '/' + formatDate(date).formatDD + ' ' +
+      formatDate(date).hour + ':' + formatDate(date).minute
+  }
+
+  onShareAppMessage(res => {
+    const user = uni.getStorageSync('user')
+    fetchShareSuccess({
+      userId: user.id,
+      shareId: data.value.id
+    }).then(() => {})
+    return {
+      title: data.value.homeworkTitle,
+      path: `/pages/share/stu-video?id=${data.value.id}`,
+      imageUrl: 'https://zk230-1258847718.cos.ap-beijing.myqcloud.com/20221105200549.png'
+    }
+  })
+
   const handleSubmit = () => {
     if (!videoId.value) {
       uni.showToast({
@@ -83,7 +120,6 @@
     }
     submitHw(params).then(res => {
       status.value = false
-      console.log(status.value);
       uni.showToast({
         icon: 'success',
         title: '作业提交成功'
@@ -153,6 +189,7 @@
     width: 675rpx;
     margin: 0 auto;
     padding-top: 30rpx;
+    color: #333;
   }
 
   .pub-hw {
@@ -171,7 +208,6 @@
       }
 
       .pub-time {
-        text-align: right;
         color: $uni-text-color-grey;
         font-size: $uni-font-size-sm;
       }
@@ -199,6 +235,34 @@
       width: 100%;
       display: flex;
       justify-content: flex-end;
+    }
+
+    .sub-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: $uni-font-size-sm;
+
+      .score {
+        font-size: $uni-font-size-base;
+      }
+
+      .date {
+        color: $uni-text-color-grey;
+      }
+    }
+
+    .comment {
+      background-color: #f6f6f6;
+      padding: 20rpx;
+      border-radius: 4px;
+
+      .content {
+        background-color: $uni-primary;
+        padding: 3rpx 5rpx;
+        color: #fff;
+        border-radius: 4px;
+      }
     }
   }
 </style>

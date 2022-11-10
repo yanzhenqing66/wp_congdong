@@ -1,23 +1,39 @@
 <template>
-  <view class="hwCItem">
+  <view class="hwCItem" v-for="item in homeworkVideoRecordList" :key="item.id">
     <view class="hwCItem_no">
-      <text class="blod">NO.000000</text>
+      <text class="blod">NO.{{item.id}}</text>
       <text class="uni-mx-10">|</text>
-      <text>作业目标: <text class="blod">体前变向运球练习</text></text>
+      <text>作业目标: <text class="blod">{{item.content}}</text></text>
     </view>
-    <view class="hwCItem_video"></view>
-    <view class="hwCItem_upload-time uni-mt-5">上传时间：2022/09/30 22:00</view>
+    <video :src="item.videoUrl" class="hwCItem_video"></video>
+    <view class="hwCItem_upload-time uni-mt-5">上传时间：{{uploadTime(item.createTime)}}</view>
     <view class="hwCItem_teach-comment uni-primary">教练点评</view>
     <view class="border-line uni-my-10"></view>
     <view class="hwCItem_handle">
-      <view class="inline">
+      <view class="inline" v-if="!item.score">
         <uni-number-box :min="1" :max="10" v-model="score" />
         <text class="hwCItem_handle_mark">分</text>
       </view>
-      <com-button size='mini' type='warning' className='uni-radius-pill' @click="handleRwScore">评分</com-button>
-      <com-button size='mini' type='primary' className='uni-radius-pill' @click='handleComment'>在线点评</com-button>
+      <view class="inline" v-else>
+        <text class="uni-ml-4">{{item.score}}分</text>
+      </view>
+      <com-button v-if="!item.score" size='mini' type='warning' className='uni-radius-pill'
+        @click="handleRwScore(item.id)">评分
+      </com-button>
+      <com-button size='mini' type='primary' className='uni-radius-pill' @click='handleComment(item.id)'>在线点评
+      </com-button>
     </view>
-    <view class="hwCItem_comment" v-show="commentFlag"></view>
+    <view class="hwCItem_comment" v-show="commentFlag[item.id]">
+      <view class="uni-mb-15">
+        <text>评论内容: </text>
+        <text class="hwCItem_comment_content">{{item.comments[0]}}</text>
+      </view>
+      <view class="flex-align-center" v-if="!item.comments[0]">
+        <uni-easyinput v-model="comment[item.id]" placeholder="请输入评论内容..."></uni-easyinput>
+        <com-button type='warning' class='uni-ml-5' @click='handlePubComment(item)'>发布
+        </com-button>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -28,36 +44,68 @@
   } from 'vue'
   import {
     reviewScore,
-    fetchStuHwVideoList
+    reviewComment
   } from '@/api/path/teach.js'
+  import {
+    formatDate
+  } from '@/libs/day.js'
 
   const props = defineProps({
-    id: String
+    id: String,
+    studentId: String,
+    homeworkVideoRecordList: Array
   })
 
   const user = uni.getStorageSync('user')
-
-  const commentFlag = ref(false)
-
+  const comment = ref({})
+  const commentFlag = ref({})
   const score = ref(1)
 
-  const handleRwScore = () => {
+  const handleRwScore = (id) => {
     reviewScore({
-      id: props.id,
+      id: id,
       score: score.value
     }).then(res => {
+      props.homeworkVideoRecordList.map(item => {
+        if (item.id === id) {
+          item.score = score.value
+        }
+        return
+      })
+    })
+  }
+
+  const handleComment = (id) => {
+    if (commentFlag.value[id]) {
+      commentFlag.value[id] = false
+      return
+    }
+    commentFlag.value[id] = true
+  }
+
+  const handlePubComment = (data) => {
+    const params = {
+      userId: user.id,
+      comment: comment.value[data.id],
+      homeworkVideoRecordId: data.id,
+      homeworkStudentDetailId: data.homeworkStudentDetailId
+    }
+    reviewComment(params).then(res => {
       console.log(res);
     })
   }
 
-  onMounted(() => {
-    fetchStuHwVideoList(user.id).then(res => {
-      console.log(res);
-    })
-  })
+  const uploadTime = (date) => {
+    if (!date) return
+    const {
+      year,
+      formatMM,
+      formatDD,
+      hour,
+      minute
+    } = formatDate(date)
 
-  const handleComment = () => {
-    commentFlag.value = !commentFlag.value
+    return year + '/' + formatMM + '/' + formatDD + ' ' + hour + ':' + minute
   }
 </script>
 
@@ -67,6 +115,7 @@
     width: 100%;
     background-color: #fff;
     padding: 20rpx 15rpx 30rpx;
+    margin-bottom: 60rpx;
 
     &_no {
       position: absolute;
@@ -87,7 +136,6 @@
       margin-top: 20rpx;
       width: 100%;
       height: 300rpx;
-      background-color: #ccc;
     }
 
     &_upload-time {
@@ -109,10 +157,17 @@
     }
 
     &_comment {
+      padding: 30rpx;
       width: 100%;
-      height: 350rpx;
       background-color: $uni-bg-color-grey;
       margin-top: 20rpx;
+
+      &_content {
+        background-color: $uni-warning;
+        padding: 3rpx;
+        color: #fff;
+        border-radius: 4px;
+      }
     }
   }
 </style>

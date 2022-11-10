@@ -13,7 +13,8 @@
 
 <script setup>
   import {
-    ref
+    ref,
+    onMounted
   } from 'vue'
   import {
     userLogin,
@@ -21,6 +22,38 @@
     getUserInfo
   } from '@/api/path/login.js'
 
+  onMounted(() => {
+    uni.showLoading({
+      icon: 'loading'
+    })
+    const token = uni.getStorageSync('token')
+    const user = uni.getStorageSync('user')
+
+    if (token && user.id) {
+      getUserInfo().then(res => {
+        uni.setStorageSync('user', res.data)
+        if (res.data.userType === 2) {
+          uni.reLaunch({
+            url: '/pages/teach/student/index'
+          })
+        } else if (res.data.userType === 3) {
+          if (res.data.contractType) {
+            uni.reLaunch({
+              url: '/pages/student/home/index'
+            })
+          } else {
+            uni.reLaunch({
+              url: '/pages/login/questions'
+            })
+          }
+        }
+      })
+    } else {
+      uni.removeStorageSync('token')
+      uni.removeStorageSync('user')
+      uni.hideLoading()
+    }
+  })
 
   const login = () => {
     uni.showToast({
@@ -42,13 +75,19 @@
         uni.setStorageSync('token', result.data.maOpenid)
         uni.setStorageSync('user', result.data)
         if (result.data.userType === 2) {
-          uni.redirectTo({
+          uni.reLaunch({
             url: '/pages/teach/student/index'
           })
         } else if (result.data.userType === 3) {
-          uni.navigateTo({
-            url: '/pages/login/questions'
-          })
+          if (result.data.contractType) {
+            uni.reLaunch({
+              url: '/pages/student/home/index'
+            })
+          } else {
+            uni.reLaunch({
+              url: '/pages/login/questions'
+            })
+          }
         }
       }
     })
