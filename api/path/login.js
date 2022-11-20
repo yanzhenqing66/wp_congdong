@@ -4,7 +4,7 @@ import {
 } from '../index.js'
 
 
-export const userLogin = params => get(`user/login/${params}`)
+export const userLogin = params => post(`user/login`, params)
 
 export const getUserPhone = params => get('user/getMobile', params)
 

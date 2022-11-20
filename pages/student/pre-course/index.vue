@@ -134,5 +134,11 @@
     ::v-deep.uni-select {
       background-color: #fff;
     }
+    
+    ::v-deep.uni-forms-item__label {
+      text:last-child {
+        color: #fff;
+      }
+    }
   }
 </style>

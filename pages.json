@@ -12,31 +12,7 @@
     "backgroundColor": "#f8f8f8"
   },
 
-  "pages": [{
-      "path": "pages/login/index",
-      "style": {
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/login/questions",
-      "style": {
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/login/submit-questions",
-      "style": {
-        "navigationStyle": "custom"
-      }
-    },
-    // 分享
-    {
-      "path": "pages/share/stu-video",
-      "style": {
-        "navigationStyle": "custom"
-      }
-    },
+  "pages": [
     // 学生端路由
     {
       "path": "pages/student/home/index",
@@ -80,6 +56,39 @@
         "navigationStyle": "custom"
       }
     },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/questions",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/submit-questions",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    // 分享
+    {
+      "path": "pages/share/stu-video",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    
+    // 支付相关
+    {
+      "path": "pages/student/payment/index"
+    },
+    {
+      "path": "pages/student/payment/result"
+    },
     // 教师端路由
     {
       "path": "pages/teach/student/index"
@@ -108,12 +117,12 @@
         "iconPath": "static/images/tabbar/home.png",
         "selectedIconPath": "static/images/tabbar/home_sel.png"
       },
-      {
-        "pagePath": "pages/student/course/index",
-        "text": "课程",
-        "iconPath": "static/images/tabbar/course.png",
-        "selectedIconPath": "static/images/tabbar/course_sel.png"
-      },
+      // {
+      //   "pagePath": "pages/student/course/index",
+      //   "text": "课程",
+      //   "iconPath": "static/images/tabbar/course.png",
+      //   "selectedIconPath": "static/images/tabbar/course_sel.png"
+      // },
       {
         "pagePath": "pages/student/train/index",
         "text": "训练",

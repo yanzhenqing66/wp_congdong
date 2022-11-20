@@ -1,4 +1,4 @@
-const baseUrl = 'http://82.157.232.47:8080/'
+const baseUrl = 'https://www.huihuishou.vip/congdong/'
 
 function request(url = '', data = {}, type = 'GET', header = {}) {
   return new Promise((resolve, reject) => {

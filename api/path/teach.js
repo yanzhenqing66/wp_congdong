@@ -40,3 +40,6 @@ export const reviewComment = params => post('teacher/comment', params)
 
 // 视频回显
 export const fetchStuHwVideoList = id => get(`teacher/homeworkVideoRecordList?studentId=${id}`)
+
+// 编辑作业
+export const updateHw = params => post('teacher/updateHomework', params)

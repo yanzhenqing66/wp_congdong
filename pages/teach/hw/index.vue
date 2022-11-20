@@ -6,16 +6,16 @@
           <uni-datetime-picker type="date" return-type="timestamp" :clear-icon="false" v-model="date"
             @change="handleDateChange" />
         </view>
-        <com-button size='mini' type='warning' className='homework_publish uni-radius-pill uni-mt-15' width='444rpx'
-          height='67rpx'>
-          发布作业</com-button>
+      <!--  <com-button size='mini' type='warning' className='homework_publish uni-radius-pill uni-mt-15' width='444rpx'
+          height='67rpx' @click='handleAllHw'>
+          发布作业</com-button> -->
         <view class='uni-mt-15'>
           <uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" styleType="text">
           </uni-segmented-control>
         </view>
       </view>
 
-      <view class="uni-pa-19 uni-mt-14">
+      <view class="uni-pa-19 uni-mt-14" v-if="hwList.length">
         <view v-show="currentIndex === 0">
           <view v-for="i in hwList" :key="i.id" class='homework_con_item'>
             <HomeworkItem :handleBtn='true' :data='i' />
@@ -80,6 +80,12 @@
       hwList.value = res
     })
   }
+  
+  // const handleAllHw = () => {
+  //   uni.navigateTo({
+  //     url: `/pages/teach/publish-hw/index?type=3`,
+  //   })
+  // }
 </script>
 
 <style lang="scss" scoped>

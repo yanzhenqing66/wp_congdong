@@ -13,7 +13,7 @@
 
 <script setup>
   setTimeout(() => {
-    uni.redirectTo({
+    uni.reLaunch({
       url: '/pages/student/home/index'
     })
   }, 2000)

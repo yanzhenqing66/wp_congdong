@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view style="height: 100%;">
     <view :style="{height: statusBarHeight + 'rpx'}">
       <!-- 这里是状态栏 -->
     </view>
@@ -29,7 +29,10 @@
   } */
 
   .nav_bar_top {
-    height: 80rpx;
+    /* height: 80rpx; */
     width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
   }
 </style>

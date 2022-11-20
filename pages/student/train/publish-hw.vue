@@ -25,7 +25,7 @@
           <view v-else class="upload flex-center uni-primary-bg uni-radius-lg" @click="handleSelect">
             <view>
               <uni-icons type="videocam" size="50" color="#fff"></uni-icons>
-              <view class="upload_text">上传或拍摄训练视频</view>
+              <view style="color: #fff">上传或拍摄训练视频</view>
             </view>
           </view>
         </view>
@@ -100,7 +100,7 @@
     return {
       title: data.value.homeworkTitle,
       path: `/pages/share/stu-video?id=${data.value.id}`,
-      imageUrl: 'https://zk230-1258847718.cos.ap-beijing.myqcloud.com/20221105200549.png'
+      imageUrl: 'https://congdong-1312872844.cos.ap-beijing.myqcloud.com/20221105200549.png'
     }
   })
 
@@ -148,7 +148,7 @@
       mask: true //是否显示透明蒙层，防止触摸穿透
     })
     const uploadTask = uni.uploadFile({
-      url: 'http://82.157.232.47:8080/cos/upload', //开发者服务器地址
+      url: 'https://www.huihuishou.vip/congdong/cos/upload', //开发者服务器地址
       filePath: tempFilePath, //要上传文件资源的路径（本地路径）
       name: 'file', //文件对应key,开发者在服务端可以通过这个 key 获取文件的二进制内容
       header: {
@@ -224,10 +224,6 @@
         width: 100%;
         height: 300rpx;
         text-align: center;
-
-        &_text {
-          font-size: $uni-font-size-sm;
-        }
       }
     }
 

@@ -63,6 +63,19 @@
   }
 
   const handlePay = () => {
+    if(!user.id) {
+      uni.navigateTo({
+        url: '/pages/login/index'
+      })
+      return
+    }
+    if(!orderInfo.value.courseId) {
+      uni.showToast({
+        icon:'error',
+        title: '请选择课程'
+      })
+      return
+    }
     const params = {
       studentId: user.id,
       teacherId: teacherId.value,
@@ -70,9 +83,12 @@
       teacherCourseId: orderInfo.value.id,
       contractType: 20
     }
-    createOrder(params).then(res => {
-      console.log(res);
+    uni.navigateTo({
+      url: `/pages/student/payment/index?teacherId=${teacherId.value}&courseId=${orderInfo.value.courseId}&teacherCourseId=${orderInfo.value.id}&price=${orderInfo.value.actualPrice}`,
     })
+    // createOrder(params).then(res => {
+    //   console.log(res);
+    // })
   }
 
   onMounted(() => {

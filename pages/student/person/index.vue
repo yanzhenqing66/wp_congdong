@@ -55,6 +55,36 @@
     fetchPresonData
   } from '@/api/path/student.js'
   import PersonHeader from './components/header.vue'
+  
+  // 登录问题
+  // import {
+  //   onTabItemTap
+  // } from '@dcloudio/uni-app'
+  // import {
+  //   getUserInfo
+  // } from '@/api/path/login.js'
+  
+  // onTabItemTap(() => {
+  //   const token = uni.getStorageSync('token')
+  //   const user = uni.getStorageSync('user')
+  
+  //   if (token && user?.id) {
+  //     getUserInfo().then(res => {
+  //       uni.setStorageSync('user', res.data)
+  //       if (res.data.userType === 2) {
+  //         uni.reLaunch({
+  //           url: '/pages/teach/student/index'
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     uni.removeStorageSync('token')
+  //     uni.removeStorageSync('user')
+  //     uni.navigateTo({
+  //       url: '/pages/login/index'
+  //     })
+  //   }
+  // })
 
   const user = uni.getStorageSync('user')
 

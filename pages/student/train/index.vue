@@ -1,5 +1,8 @@
 <template>
   <com-stu-layout headShow>
+    <view slot='head'>
+      <button size="mini" class='login_btn' @click="goLogin" v-if="!user.id">免费体验</button>
+    </view>
     <view class="train">
       <view class="train_methods">
         <uni-segmented-control :current="trainMCur" :values="trainMethods" @clickItem="handleTrainMethodsChange"
@@ -29,6 +32,9 @@
     ref,
     reactive
   } from 'vue'
+  
+  const user = uni.getStorageSync('user')
+  
   const trainMethods = reactive(['作业', '私教'])
   const trainMCur = ref(0)
 
@@ -45,9 +51,24 @@
       url: '/pages/student/pre-course/index'
     })
   }
+  
+  const goLogin = () => {
+    uni.navigateTo({
+      url: '/pages/login/index'
+    })
+  }
 </script>
 
 <style scoped lang="scss">
+  .login_btn {
+    width: 250rpx;
+    // margin-top: 30rpx;
+    margin-left: 40rpx;
+    border-radius: 30px;
+    background-color: $uni-color-warning;
+    color: #fff;
+  }
+  
   .train {
     width: 675rpx;
     margin: 0 auto;

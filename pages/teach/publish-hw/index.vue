@@ -33,6 +33,7 @@
           </view>
         </view>
         <com-button v-show='form.homeworkTemplateId' type='primary' @click='addHwContent'>+ 继续添加作业内容</com-button>
+        <com-button v-if="type === '3'" type='primary' @click='handleSelStu'>选择学员</com-button>
         <view class="border-line uni-my-14"></view>
         <view class="publish_select_btn">
           <com-button type="primary" size="mini" width="235rpx" height="67rpx" @click="handleReset">重置内容</com-button>
@@ -64,7 +65,8 @@
     fetchHwTemp,
     fetchHwTempDetail,
     fetchPubHw,
-    fetchHwDetal
+    fetchHwDetal,
+    updateHw
   } from '@/api/path/teach.js'
   import UserHead from '@/components/teach/user-head'
   import TempList from './temp-list'
@@ -77,7 +79,8 @@
     homeworkDate: null, // 日期
     homeworkTemplateId: '', // 作业目标
     content: '', // 动作要点
-    studentId: ''
+    studentId: '',
+    oldHomeworkId: ''
   })
   const tempDetailList = ref([]) // 模版视频详情
 
@@ -90,7 +93,9 @@
   onLoad((option) => {
     // console.log(option);
     type.value = option.type
-    form.studentId = option.studentId
+    if(option.studentId) {
+      form.studentId = option.studentId
+    }
   })
 
   onMounted(() => {
@@ -112,6 +117,7 @@
       form.homeworkTemplateId = data.homeworkTemplateId
       form.content = data.content
       tempDetailList.value = data.homeworkDetailVos
+      form.oldHomeworkId = data.id
     })
   }
 
@@ -125,6 +131,11 @@
     })
   }
 
+  // 选择学员
+  const handleSelStu = () => {
+    
+  }
+  
   const getHwTemp = () => {
     fetchHwTemp().then((res) => {
       const list = res.map((item) => {
@@ -209,7 +220,8 @@
         homeworkDate: homeworkDate,
         homeworkTemplateId: form.homeworkTemplateId,
         content: form.content,
-        homeworkDetailTemplateId: hwTempIds
+        homeworkDetailTemplateId: hwTempIds,
+        oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
       }]
     } else {
       homeworks = homeworkDate.map(item => ({
@@ -217,7 +229,8 @@
         homeworkDate: item,
         homeworkTemplateId: form.homeworkTemplateId,
         content: form.content,
-        homeworkDetailTemplateId: hwTempIds
+        homeworkDetailTemplateId: hwTempIds,
+        oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
       }))
     }
 
@@ -225,6 +238,25 @@
     const params = {
       teacherId: user.id,
       homeworks
+    }
+    
+    if(type.value === '2') {
+      updateHw(params).then(res => {
+        if (res.code === 100000) {
+          uni.showToast({
+            title: '发布成功'
+          })
+          setTimeout(() => {
+            uni.navigateBack()
+          }, 1500)
+        } else {
+          uni.showToast({
+            icon:'error',
+            title: res.msg
+          })
+        }
+      })
+      return
     }
 
     fetchPubHw(params).then(res => {
@@ -237,7 +269,8 @@
         }, 1500)
       } else {
         uni.showToast({
-          title: '发布失败,请重试'
+          icon:'error',
+          title: res.msg
         })
       }
     })

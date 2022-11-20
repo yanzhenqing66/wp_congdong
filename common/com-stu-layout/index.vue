@@ -1,6 +1,8 @@
 <template>
   <view class="stu_layout">
-    <com-top-bar v-if="headShow"></com-top-bar>
+    <view class="nav_bar_top" :style="{height: topHeight + 'rpx'}" v-if="headShow">
+      <slot name="head"></slot>
+    </view>
     <scroll-view class="stu_layout_children" scroll-y="true" scroll-x="false"
       :style="{position: headShow ? 'absolute' : '', top: topHeight + 'rpx'}">
       <slot />
@@ -35,11 +37,18 @@
   .stu_layout {
     width: 100%;
     min-height: 100%;
-    background: url('https://poppyapps.oss-cn-beijing.aliyuncs.com/main-bg.png') no-repeat;
+    background: url('https://congdong-1312872844.cos.ap-beijing.myqcloud.com/logobg.png') no-repeat;
     background-attachment: fixed;
     background-size: 100% 100%;
     background-position: center;
     color: $uni-text-color-inverse;
+    
+    .nav_bar_top {
+      /* height: 80rpx; */
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+    }
 
     &_children {
       // bottom: calc(100rpx + 24rpx + env(safe-area-inset-bottom));/

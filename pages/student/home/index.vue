@@ -7,6 +7,24 @@
 </template>
 
 <script setup>
+  import {onMounted} from 'vue'
+  import {getUserInfo} from '@/api/path/login.js'
+  
+  onMounted(() => {
+    const token = uni.getStorageSync('token')
+    const user = uni.getStorageSync('user')
+    if (token && user.id) {
+      getUserInfo().then(res => {
+        uni.setStorageSync('user', res.data)
+        if (res.data.userType === 2) {
+          uni.reLaunch({
+            url: '/pages/teach/student/index'
+          })
+        }
+      })
+    } 
+  })
+      
 </script>
 
 <style scoped lang="scss">
