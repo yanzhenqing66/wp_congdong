@@ -14,6 +14,9 @@ export const fetchStuDetail = params => get(`user/getStudentInfo`, params)
 // 获取左作业模板
 export const fetchHwTemp = () => get('teacher/homeworkTemplateList')
 
+// 获取所有学生列表
+export const fetchAllStuList = params => get('teacher/studentList', params)
+
 // 作业模板详情 /teacher/homeworkDetailTemplateList?homeworkTemplateId=111
 export const fetchHwTempDetail = (id) => get(`teacher/homeworkDetailTemplateList?homeworkTemplateId=${id}`)
 

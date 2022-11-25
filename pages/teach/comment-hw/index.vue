@@ -27,8 +27,6 @@
   import StuInfo from '@/components/teach/stu-info.vue'
   import HwCommentItem from '@/components/teach/hw-comment-item.vue'
   import {
-    fetchStuDetail,
-    fetchHwDetal,
     fetchStuHwVideoList
   } from '@/api/path/teach.js'
 

@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <view class="publish">
-      <UserHead :data='stuDetail' />
+      <UserHead :data='stuDetail' v-if="type !== '3'" />
       <view class="publish_edit">编辑作业信息</view>
       <view class="publish_calendar">
         <uni-calendar v-model="form.homeworkDate" :date="formatDate(initDate || Date.now()).fullDate"
@@ -33,7 +33,7 @@
           </view>
         </view>
         <com-button v-show='form.homeworkTemplateId' type='primary' @click='addHwContent'>+ 继续添加作业内容</com-button>
-        <com-button v-if="type === '3'" type='primary' @click='handleSelStu'>选择学员</com-button>
+        <com-button v-if="type === '3'" className='uni-mt-10' type='primary' @click='handleSelStu'>选择学员</com-button>
         <view class="border-line uni-my-14"></view>
         <view class="publish_select_btn">
           <com-button type="primary" size="mini" width="235rpx" height="67rpx" @click="handleReset">重置内容</com-button>
@@ -44,6 +44,7 @@
       </view>
     </view>
     <temp-list ref='tempPopup' @updTempDetal='updTempDetal' />
+    <stu-all-list ref="stuPopup" v-model="form.selStu"></stu-all-list>
   </view>
 </template>
 
@@ -52,10 +53,11 @@
     ref,
     reactive,
     computed,
-    onMounted
+    onMounted,
+    watch
   } from 'vue'
   import {
-    onLoad,
+    onLoad, 
   } from '@dcloudio/uni-app'
   import {
     formatDate
@@ -66,10 +68,12 @@
     fetchHwTempDetail,
     fetchPubHw,
     fetchHwDetal,
-    updateHw
+    updateHw,
+    fetchAllStuList
   } from '@/api/path/teach.js'
   import UserHead from '@/components/teach/user-head'
   import TempList from './temp-list'
+  import StuAllList from './stuAllList'
 
   const user = uni.getStorageSync('user')
   const trainGoalList = reactive([]) // 作业目标选项
@@ -80,16 +84,19 @@
     homeworkTemplateId: '', // 作业目标
     content: '', // 动作要点
     studentId: '',
-    oldHomeworkId: ''
+    oldHomeworkId: '',
+    selStu: []
   })
   const tempDetailList = ref([]) // 模版视频详情
 
   const type = ref('')
   const stuDetail = ref({})
   const tempPopup = ref()
+  const stuPopup = ref()
   const initDate = ref(null)
+  const initAllStu = ref([])
   const startDate = computed(() => formatDate(Date.now()).fullDate)
-
+  
   onLoad((option) => {
     // console.log(option);
     type.value = option.type
@@ -104,6 +111,13 @@
     if (type.value === '2') {
       init()
     }
+    if(type.value === '3') {
+      getAllStu()
+    }
+  })
+  
+  watch(() => form.homeworkDate, () => {
+    getAllStu()
   })
 
   const init = () => {
@@ -131,9 +145,34 @@
     })
   }
 
+  // 获取所有学生
+  const getAllStu = () => {
+    let homeworkDate
+    if (form.homeworkDate) {
+      const range = form.homeworkDate.range.data
+      const fulldate = form.homeworkDate.fulldate
+      if (range.length > 1) {
+        homeworkDate = range.map(item => {
+          return new Date(item.replace(/-/g, '/')).getTime()
+        })
+      } else {
+        homeworkDate = new Date(fulldate.replace(/-/g, '/')).getTime()
+      }
+    } else {
+      homeworkDate = new Date(startDate.value.replace(/-/g, '/')).getTime()
+    }
+    const params = {
+      teacherId: user.id,
+      dates: homeworkDate.toString()
+    }
+    fetchAllStuList(params).then(res => {
+      initAllStu.value = res
+    })
+  }
+  
   // 选择学员
   const handleSelStu = () => {
-    
+    stuPopup.value.open(initAllStu.value)
   }
   
   const getHwTemp = () => {
@@ -194,7 +233,13 @@
   }
 
   const handlePubHw = () => {
-    if (!tempDetailList.value.length) return
+    if (!tempDetailList.value.length) {
+      uni.showToast({
+        icon:'error',
+        title: '请选择作业'
+      })
+      return
+    } 
     const hwTempIds = tempDetailList.value.map(item => item.id)
 
     let homeworkDate
@@ -213,25 +258,53 @@
     }
 
     let homeworks
+    const selStu = form.selStu.map(item => item)
 
     if (typeof homeworkDate === 'number') {
-      homeworks = [{
-        studentId: form.studentId,
-        homeworkDate: homeworkDate,
-        homeworkTemplateId: form.homeworkTemplateId,
-        content: form.content,
-        homeworkDetailTemplateId: hwTempIds,
-        oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
-      }]
+      if(type.value === '3') {
+        homeworks = selStu.map(stu => {
+         return {
+           studentId: stu,
+           homeworkDate: homeworkDate,
+           homeworkTemplateId: form.homeworkTemplateId,
+           content: form.content,
+           homeworkDetailTemplateId: hwTempIds,
+           oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
+         }
+        })
+      } else {
+        homeworks = [{
+          studentId: form.studentId,
+          homeworkDate: homeworkDate,
+          homeworkTemplateId: form.homeworkTemplateId,
+          content: form.content,
+          homeworkDetailTemplateId: hwTempIds,
+          oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
+        }]
+      }
     } else {
-      homeworks = homeworkDate.map(item => ({
-        studentId: form.studentId,
-        homeworkDate: item,
-        homeworkTemplateId: form.homeworkTemplateId,
-        content: form.content,
-        homeworkDetailTemplateId: hwTempIds,
-        oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
-      }))
+      const list = homeworkDate.map(item => {
+        if(type.value === '3') {
+          return selStu.map(stu => ({
+            studentId: stu,
+            homeworkDate: item,
+            homeworkTemplateId: form.homeworkTemplateId,
+            content: form.content,
+            homeworkDetailTemplateId: hwTempIds,
+            oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
+          }))
+        }else {
+          return {
+            studentId: form.studentId,
+            homeworkDate: item,
+            homeworkTemplateId: form.homeworkTemplateId,
+            content: form.content,
+            homeworkDetailTemplateId: hwTempIds,
+            oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
+          }
+        }
+      })
+      homeworks = list.flat(Infinity)
     }
 
     // if(range)

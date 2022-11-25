@@ -6,9 +6,9 @@
           <uni-datetime-picker type="date" return-type="timestamp" :clear-icon="false" v-model="date"
             @change="handleDateChange" />
         </view>
-      <!--  <com-button size='mini' type='warning' className='homework_publish uni-radius-pill uni-mt-15' width='444rpx'
+       <com-button size='mini' type='warning' className='homework_publish uni-radius-pill uni-mt-15' width='444rpx'
           height='67rpx' @click='handleAllHw'>
-          发布作业</com-button> -->
+          发布作业</com-button>
         <view class='uni-mt-15'>
           <uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" styleType="text">
           </uni-segmented-control>
@@ -81,11 +81,11 @@
     })
   }
   
-  // const handleAllHw = () => {
-  //   uni.navigateTo({
-  //     url: `/pages/teach/publish-hw/index?type=3`,
-  //   })
-  // }
+  const handleAllHw = () => {
+    uni.navigateTo({
+      url: `/pages/teach/publish-hw/index?type=3`,
+    })
+  }
 </script>
 
 <style lang="scss" scoped>
