@@ -42,7 +42,7 @@ export const reviewScore = params => post(`teacher/score`, params)
 export const reviewComment = params => post('teacher/comment', params)
 
 // 视频回显
-export const fetchStuHwVideoList = id => get(`teacher/homeworkVideoRecordList?studentId=${id}`)
+export const fetchStuHwVideoList = params => get(`teacher/homeworkVideoRecordList`, params)
 
 // 编辑作业
 export const updateHw = params => post('teacher/updateHomework', params)

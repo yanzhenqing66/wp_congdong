@@ -42,6 +42,7 @@
 </template>
 
 <script setup>
+  import { onShow } from '@dcloudio/uni-app'
   import {
     ref,
     onMounted
@@ -81,8 +82,12 @@
       trainHwList.value = res
     })
   }
-
+  
   onMounted(() => {
+    getStuHwList()
+  })
+
+  onShow(() => {
     getStuHwList()
   })
 

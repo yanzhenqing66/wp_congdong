@@ -45,7 +45,10 @@
       }
     },
     {
-      "path": "pages/student/person/score"
+      "path": "pages/student/person/score",
+      "style": {
+        "enablePullDownRefresh": true
+      }
     },
     {
       "path": "pages/student/person/order"

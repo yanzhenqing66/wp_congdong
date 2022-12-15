@@ -83,7 +83,7 @@
   
   const handleAllHw = () => {
     uni.navigateTo({
-      url: `/pages/teach/publish-hw/index?type=3`,
+      url: `/pages/teach/publish-hw/index?type=3&date=${date.value}`,
     })
   }
 </script>

@@ -11,7 +11,7 @@
     <view class="border-line uni-my-10"></view>
     <view class="hwCItem_handle">
       <view class="inline" v-if="!item.score">
-        <uni-number-box :min="1" :max="10" v-model="score" />
+        <uni-number-box :min="1" :max="10" v-model="score[item.id]" />
         <text class="hwCItem_handle_mark">分</text>
       </view>
       <view class="inline" v-else>
@@ -59,16 +59,20 @@
   const user = uni.getStorageSync('user')
   const comment = ref({})
   const commentFlag = ref({})
-  const score = ref(1)
+  const score = ref({})
 
   const handleRwScore = (id) => {
     reviewScore({
       id: id,
-      score: score.value
+      score: score.value[id]
     }).then(res => {
+      uni.showToast({
+        icon:'success',
+        title: '评分成功'
+      })
       props.homeworkVideoRecordList.map(item => {
         if (item.id === id) {
-          item.score = score.value
+          item.score = score.value[id]
         }
         return
       })
@@ -91,7 +95,16 @@
       homeworkStudentDetailId: data.homeworkStudentDetailId
     }
     reviewComment(params).then(res => {
-      console.log(res);
+      uni.showToast({
+        icon:'success',
+        title: '评论成功'
+      })
+      props.homeworkVideoRecordList.map(item => {
+        if (item.id === data.id) {
+          item.comments = [comment.value[data.id]]
+        }
+        return
+      })
     })
   }
 

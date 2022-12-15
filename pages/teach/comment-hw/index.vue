@@ -34,15 +34,22 @@
   const studentId = ref()
   const curDate = ref()
   const stuDetail = ref({})
+  const hwId = ref('')
   const homeworkVideoRecordList = ref([])
 
   onLoad((options) => {
     studentId.value = options.studentId
     curDate.value = options.date
+    hwId.value = options.hwId
   })
 
   onMounted(() => {
-    fetchStuHwVideoList(studentId.value).then(res => {
+    const params = {
+      studentId: studentId.value,
+      date: curDate.value || '',
+      id: hwId.value || ''
+    }
+    fetchStuHwVideoList(params).then(res => {
       stuDetail.value = res.userInfo
       homeworkVideoRecordList.value = res.homeworkVideoRecordList
     })

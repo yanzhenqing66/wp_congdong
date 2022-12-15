@@ -17,7 +17,7 @@
       </view>
       <view class="handle_btn">
         <com-button type='warning' className='uni-radius-pill' width='435rpx' height='90rpx' @click='handleReceive'>
-          免费领取训练课程
+          {{options.title}}
         </com-button>
       </view>
     </view>
@@ -42,9 +42,12 @@
   import {
     formatDate
   } from '@/libs/day.js'
+  
+  const user = uni.getStorageSync('user')
 
   const options = reactive({
     id: '',
+    title: ''
   })
 
   const data = ref({})
@@ -57,6 +60,7 @@
     fetchShareVideo(options.id).then(res => {
       data.value = res
     })
+    options.title = user?.id ? (user?.contractType ? '查看我的训练计划' : '马上加入训练营') : '免费领取训练课程'
   })
 
   const handleReceive = () => {

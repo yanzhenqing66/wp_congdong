@@ -3,7 +3,7 @@
     <view class="pub-hw-box" v-if="data.id">
       <view class="flex-bewteen">
         <com-cur-date color='#fff'></com-cur-date>
-        <button class="uni-radius-pill uni-primary-bg" style="color: #fff;" open-type="share" size="mini">
+        <button v-if="data.recordVideoUrl" class="uni-radius-pill uni-primary-bg" style="color: #fff;" open-type="share" size="mini">
           转发分享
         </button>
       </view>
@@ -112,23 +112,32 @@
       })
       return
     }
-    const params = {
-      studentId: data.value.studentId,
-      teacherId: data.value.teacherId,
-      homeworkStudentDetailId: data.value.id,
-      videoId: videoId.value
-    }
-    submitHw(params).then(res => {
-      status.value = false
-      uni.showToast({
-        icon: 'success',
-        title: '作业提交成功'
-      })
-    }).catch(err => {
-      uni.showToast({
-        icon: 'error',
-        title: '作业提交失败, 请重试'
-      })
+    uni.showModal({
+    	title: '确认提交吗？',
+    	success: function (res) {
+    		if (res.confirm) {
+    			const params = {
+    			  studentId: data.value.studentId,
+    			  teacherId: data.value.teacherId,
+    			  homeworkStudentDetailId: data.value.id,
+    			  videoId: videoId.value
+    			}
+    			submitHw(params).then(res => {
+    			  status.value = false
+    			  uni.showToast({
+    			    icon: 'success',
+    			    title: '作业提交成功'
+    			  })
+    			}).catch(err => {
+    			  uni.showToast({
+    			    icon: 'error',
+    			    title: '作业提交失败, 请重试'
+    			  })
+    			})
+    		} else if (res.cancel) {
+    			console.log('用户点击取消');
+    		}
+    	}
     })
   }
 

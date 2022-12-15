@@ -22,13 +22,16 @@ export const fetchCourseDetail = params => get('student/teacherCourseList', para
 export const uploadVideo = params => post('cos/upload')
 
 // 教师枚举
-export const fetchTeacherEnum = (id) => get(`student/teacherList?studentId=${id}`)
+export const fetchTeacherEnum = () => get(`student/teacherList`)
 
 // 线上线下枚举
 export const fetchOmoEnum = () => get('common/getEnum?name=Omo')
 
 // 课程时长
 export const fetchCourseDur = () => get('common/getEnum?name=CourseDuration')
+
+// 约课人数枚举
+export const fetchPeopleCount = () => get(`common/getEnum?name=PeopleCount`)
 
 // 提交约课
 export const reserveCourse = params => post('student/reserveCourse', params)
@@ -59,3 +62,5 @@ export const fetchShareSuccess = params => post('student/share', params)
 
 // 分享 信息
 export const fetchShareVideo = id => get(`student/homeworkVideoRecord?id=${id}`)
+
+// 

@@ -27,8 +27,15 @@
   })
 
   const curDate = (start, end) => {
-    return formatDate(start).year + '' + formatDate(start).formatMM + '' + formatDate(start)
-      .formatDD + ' - ' + formatDate(end).year + '' + formatDate(end).formatMM + '' + formatDate(end).formatDD
+    if(!start) {
+      return ''
+    }else if (!end) {
+      return formatDate(start).year + '' + formatDate(start).formatMM + '' + formatDate(start)
+        .formatDD
+    }else {
+      return formatDate(start).year + '' + formatDate(start).formatMM + '' + formatDate(start)
+        .formatDD + ' - ' + formatDate(end).year + '' + formatDate(end).formatMM + '' + formatDate(end).formatDD
+    }
   }
 </script>
 

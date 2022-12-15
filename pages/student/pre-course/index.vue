@@ -1,8 +1,8 @@
 <template>
   <com-stu-layout headShow>
-    <view class="form-lay class='uni-pa-19">
+    <view class="form-lay uni-pa-19">
       <view>
-        <text>为了您更好的体验约课服务，请填准确填写以下信息</text>
+        <text style="color: #fff;">为了您更好的体验约课服务，请填准确填写以下信息</text>
       </view>
       <view class="border-line uni-my-12"></view>
       <uni-forms :modelValue="formData" ref="formRef" label-position='top' class='form'>
@@ -10,18 +10,14 @@
           <uni-data-select v-model="formData.teacherId" :localdata="teachList">
           </uni-data-select>
         </uni-forms-item>
-        <uni-forms-item name="date" label="约课日前" required>
-          <uni-datetime-picker type="date" return-type='timestamp' :clear-icon="false" v-model="formData.date" />
-        </uni-forms-item>
-        <uni-forms-item name="startTime" label="起始时间" required>
-          <uni-datetime-picker type="datetime" return-type='timestamp' :clear-icon="false"
-            v-model="formData.startTime" />
+        <uni-forms-item name="date" label="约课日期" required>
+          <uni-datetime-picker type="datetime" return-type='timestamp' :clear-icon="false" v-model="formData.date" />
         </uni-forms-item>
         <uni-forms-item name="place" label="授课地点" required>
           <uni-easyinput v-model="formData.place"></uni-easyinput>
         </uni-forms-item>
         <uni-forms-item name="peopleCount" label="学员人数" required>
-          <uni-easyinput v-model="formData.peopleCount" type="number"></uni-easyinput>
+          <uni-data-select :localdata="peopleEnum" v-model="formData.peopleCount"></uni-data-select>
         </uni-forms-item>
         <uni-forms-item name="omo" label="线上线下" required>
           <uni-data-select :localdata="omoEnum" v-model="formData.omo"></uni-data-select>
@@ -54,7 +50,8 @@
     fetchTeacherEnum,
     fetchOmoEnum,
     fetchCourseDur,
-    reserveCourse
+    reserveCourse,
+    fetchPeopleCount
   } from '@/api/path/student.js'
   const user = uni.getStorageSync('user')
 
@@ -73,6 +70,7 @@
   const teachList = ref([])
   const omoEnum = ref([])
   const courseDur = ref([])
+  const peopleEnum = ref([])
 
   const formRef = ref()
 
@@ -82,8 +80,12 @@
         ...res,
         studentId: user.id
       }).then(res => {
-        console.log(res)
-        if (res.code !== 1000000) {
+        if (res.code === 100000) {
+          uni.showToast({
+            icon: 'success',
+            title: '约课成功'
+          })
+        }else {
           uni.showToast({
             icon: 'error',
             title: res.msg
@@ -103,7 +105,7 @@
   }
 
   onMounted(() => {
-    fetchTeacherEnum(user.id).then(res => {
+    fetchTeacherEnum().then(res => {
       teachList.value = res.map(item => {
         item.value = item.id
         item.text = item.name
@@ -124,13 +126,20 @@
         return item
       })
     })
+    fetchPeopleCount().then(res => {
+      peopleEnum.value = res.map(item => {
+        item.value = item.code
+        item.text = item.content
+        return item
+      })
+    })
   })
 </script>
 
 <style scoped lang="scss">
   .form-lay {
-    color: black;
-
+    color: #333;
+    
     ::v-deep.uni-select {
       background-color: #fff;
     }

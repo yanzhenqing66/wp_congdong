@@ -4,8 +4,8 @@
       <UserHead :data='stuDetail' v-if="type !== '3'" />
       <view class="publish_edit">编辑作业信息</view>
       <view class="publish_calendar">
-        <uni-calendar v-model="form.homeworkDate" :date="formatDate(initDate || Date.now()).fullDate"
-          :start-date="formatDate(Date.now()).fullDate" :insert="true" range :showMonth="false"
+        <uni-calendar v-model="form.homeworkDate" :date="formatDate(initDate)?.fullDate"
+           :insert="true" range :showMonth="false"
           @change="handleDateChange" />
       </view>
       <view class="publish_select">
@@ -22,7 +22,7 @@
                 @click="delHwVideo(item.id)"></uni-icons>
               <text>{{item.content}}</text>
             </view>
-            <view class="video uni-warning-bg uni-mx-4 flex-center">
+            <view class="video uni-warning-bg uni-mx-4 flex-center" @click="handleOpenVidoe(item.videoUrl)">
               <uni-icons type="videocam" color="#fff" size="25rpx" class="uni-mt-1"></uni-icons>
               <text>动作示范视频</text>
             </view>
@@ -45,6 +45,7 @@
     </view>
     <temp-list ref='tempPopup' @updTempDetal='updTempDetal' />
     <stu-all-list ref="stuPopup" v-model="form.selStu"></stu-all-list>
+    <video-modal ref="videoPopup"></video-modal>
   </view>
 </template>
 
@@ -57,7 +58,7 @@
     watch
   } from 'vue'
   import {
-    onLoad, 
+    onLoad,
   } from '@dcloudio/uni-app'
   import {
     formatDate
@@ -74,6 +75,7 @@
   import UserHead from '@/components/teach/user-head'
   import TempList from './temp-list'
   import StuAllList from './stuAllList'
+  import VideoModal from './videoModal.vue'
 
   const user = uni.getStorageSync('user')
   const trainGoalList = reactive([]) // 作业目标选项
@@ -93,9 +95,10 @@
   const stuDetail = ref({})
   const tempPopup = ref()
   const stuPopup = ref()
+  const videoPopup = ref()
+  
   const initDate = ref(null)
   const initAllStu = ref([])
-  const startDate = computed(() => formatDate(Date.now()).fullDate)
   
   onLoad((option) => {
     // console.log(option);
@@ -103,10 +106,15 @@
     if(option.studentId) {
       form.studentId = option.studentId
     }
+    if(option.date) {
+      initDate.value = Number(option.date)
+    }
   })
-
+  
   onMounted(() => {
-    getStuDetail()
+    if(type.value !== '3') {
+      getStuDetail()
+    }
     getHwTemp()
     if (type.value === '2') {
       init()
@@ -117,17 +125,23 @@
   })
   
   watch(() => form.homeworkDate, () => {
-    getAllStu()
+    if (type.value === '2') {
+      init()
+    }
+    if(type.value === '3') {
+      getAllStu()
+    }
   })
 
   const init = () => {
+    const time = form.homeworkDate?.range?.before?.replace(/-/g, '/') || form.homeworkDate?.fulldate?.replace(/-/g, '/') || initDate.value
     const params = {
       teacherId: user.id,
-      studentId: form.studentId
+      studentId: form.studentId,
+      date: new Date(time).getTime()
     }
     fetchHwDetal(params).then(res => {
       const data = res.data[0]
-      initDate.value = data.homeworkDate
       form.homeworkTemplateId = data.homeworkTemplateId
       form.content = data.content
       tempDetailList.value = data.homeworkDetailVos
@@ -144,6 +158,11 @@
       stuDetail.value = res.data
     })
   }
+  
+  // 打开视频
+  const handleOpenVidoe = (videoUrl) => {
+    videoPopup.value.open(videoUrl)
+  }
 
   // 获取所有学生
   const getAllStu = () => {
@@ -159,7 +178,7 @@
         homeworkDate = new Date(fulldate.replace(/-/g, '/')).getTime()
       }
     } else {
-      homeworkDate = new Date(startDate.value.replace(/-/g, '/')).getTime()
+      homeworkDate = new Date(initDate.value).getTime()
     }
     const params = {
       teacherId: user.id,
@@ -240,7 +259,14 @@
       })
       return
     } 
-    const hwTempIds = tempDetailList.value.map(item => item.id)
+    if(type.value === '3' && !form.selStu.length) {
+      uni.showToast({
+        icon:'error',
+        title: '请选择学员'
+      })
+      return
+    }
+    const hwTempIds = tempDetailList.value.map(item => ({homeworkDetailTemplateId: item.id, sets: item.sets}))
 
     let homeworkDate
     if (form.homeworkDate) {
@@ -254,7 +280,7 @@
         homeworkDate = new Date(fulldate.replace(/-/g, '/')).getTime()
       }
     } else {
-      homeworkDate = new Date(startDate.value.replace(/-/g, '/')).getTime()
+      homeworkDate = new Date(initDate.value).getTime()
     }
 
     let homeworks
@@ -268,7 +294,7 @@
            homeworkDate: homeworkDate,
            homeworkTemplateId: form.homeworkTemplateId,
            content: form.content,
-           homeworkDetailTemplateId: hwTempIds,
+           homeworkDetails: hwTempIds,
            oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
          }
         })
@@ -278,7 +304,7 @@
           homeworkDate: homeworkDate,
           homeworkTemplateId: form.homeworkTemplateId,
           content: form.content,
-          homeworkDetailTemplateId: hwTempIds,
+          homeworkDetails: hwTempIds,
           oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
         }]
       }
@@ -290,7 +316,7 @@
             homeworkDate: item,
             homeworkTemplateId: form.homeworkTemplateId,
             content: form.content,
-            homeworkDetailTemplateId: hwTempIds,
+            homeworkDetails: hwTempIds,
             oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
           }))
         }else {
@@ -299,7 +325,7 @@
             homeworkDate: item,
             homeworkTemplateId: form.homeworkTemplateId,
             content: form.content,
-            homeworkDetailTemplateId: hwTempIds,
+            homeworkDetails: hwTempIds,
             oldHomeworkId: form.oldHomeworkId ? form.oldHomeworkId : null
           }
         }

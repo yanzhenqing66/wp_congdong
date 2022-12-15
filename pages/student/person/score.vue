@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+  import {onPullDownRefresh} from '@dcloudio/uni-app'
   import {
     ref,
     onMounted
@@ -44,9 +45,18 @@
   const data = ref({})
 
   onMounted(() => {
+   getScore()
+  })
+  
+  const getScore = () => {
     fetchPersonScore(user.id).then(res => {
       data.value = res
+      uni.stopPullDownRefresh()
     })
+  }
+  
+  onPullDownRefresh(() => {
+    getScore()
   })
 
   const formatCurDate = (data) => {

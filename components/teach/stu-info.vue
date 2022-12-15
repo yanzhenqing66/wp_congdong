@@ -9,7 +9,9 @@
       </view>
       <view class="stu_info_status">
         <text class="name">学生姓名：{{data.userName}}</text>
-        <text class="status">已签约</text>
+        <text class="status">
+          {{data.contractType === 10 ? '被动签约' : (data.contractType === 20 ? '主动签约' : '未签约')}}
+        </text>
       </view>
     </view>
   </view>

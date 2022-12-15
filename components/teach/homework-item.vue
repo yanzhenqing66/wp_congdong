@@ -11,7 +11,7 @@
     <view class="border-line uni-my-10"></view>
     <view class="homework_item_content">
       <view class="content">
-        <text class="content_title">作业内容: </text>
+        <text class="content_title">动作要点: </text>
         <text class="content_name">{{data.content}}</text>
       </view>
     </view>

@@ -13,7 +13,7 @@
           重新编辑
         </com-button>
         <com-button type="primary" className="uni-radius-pill uni-ml-12" size="mini"
-          :disabled="data.commentStatus === 20" @click='commentHw(data.studentId, data.startTime)'>点评作业</com-button>
+          :disabled="data.commentStatus === 20" @click='commentHw(data.studentId)'>点评作业</com-button>
       </view>
     </view>
   </view>
@@ -33,17 +33,18 @@
       type: Object,
       default: {}
     },
+    nowDate: Number
   })
-
+  
   const handlePublish = (studentId, type) => {
     uni.navigateTo({
-      url: `/pages/teach/publish-hw/index?studentId=${studentId}&type=${type}`,
+      url: `/pages/teach/publish-hw/index?studentId=${studentId}&type=${type}&date=${props.nowDate}`,
     })
   }
 
-  const commentHw = (studentId, date) => {
+  const commentHw = (studentId) => {
     uni.navigateTo({
-      url: `/pages/teach/comment-hw/index?studentId=${studentId}&date=${date}`,
+      url: `/pages/teach/comment-hw/index?studentId=${studentId}&date=${props.nowDate}`,
     })
   }
 </script>
