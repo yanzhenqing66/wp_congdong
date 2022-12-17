@@ -12,13 +12,13 @@
       	</uni-collapse-item>
       </uni-collapse>
       <uni-collapse accordion v-if="current === 1">
-      	<uni-collapse-item title="未提交作业数">
+      	<uni-collapse-item title="未点评作业数">
       		<view v-for="item in data.homeworkStudentDetails" :key="item.id" class="hw-con">
             <text>
               {{item.content}}
             </text>
-            <com-button size='mini' type='warning' className='uni-radius-pill' @click='handleGoComment(item.id)'>
-               点评作业
+            <com-button size='mini' :type="item.commentStatus === 20 ? 'primary' : 'warning'" className='uni-radius-pill' @click='handleGoComment(data.id, item.id)'>
+              {{item.commentStatus === 20 ? '查看点评' : '点评作业'}}
              </com-button>
           </view>
       	</uni-collapse-item>
@@ -58,7 +58,8 @@
     }
   })
   
-  const handleGoComment = (hwId) => {
+  const handleGoComment = (studentId ,hwId) => {
+    const user = uni.getStorageSync('user')
     uni.navigateTo({
       url: `/pages/teach/comment-hw/index?studentId=${studentId}&hwId=${hwId}`,
     })
@@ -72,6 +73,7 @@
     background-color: #fff;
 
     &_status {
+      margin-top: 30rpx;
       ::v-deep.uni-collapse-item__title-box {
         padding: 0;
       }

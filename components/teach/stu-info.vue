@@ -4,7 +4,7 @@
     <view class="stu_info">
       <view class="stu_info_con">
         <text class="nickname uni-mr-5">{{data.nikeName}}</text>
-        <text class="no_title uni-mr-5">学员编号</text>
+        <!-- <text class="no_title uni-mr-5">学员编号</text> -->
         <text class="no">NO.{{data.userNo}}</text>
       </view>
       <view class="stu_info_status">

@@ -4,8 +4,15 @@
     <view class="stu_detail">
       <com-image :src='data.avatar' width='95rpx' height='95rpx'></com-image>
       <view class="stu_detail_info">
-        <text class="stu_detail_info_title">{{data.nikeName}}</text>
-        <text class="stu_detail_info_time">签约时间： {{curDate(data.startTime, data.endTime)}}</text>
+        <view>
+          <text class="stu_detail_info_title">{{data.nikeName}}</text>
+        </view>
+        <view>
+          <text class="stu_detail_info_time">签约时间： {{curDate(data.startTime, data.endTime)}}</text>
+          <text class="status">
+            {{data.contractType === 10 ? '被动签约' : (data.contractType === 20 ? '主动签约' : '未签约')}}
+          </text>
+        </view>
       </view>
     </view>
     <!-- <view class="border-line uni-my-12"></view> -->
@@ -66,6 +73,15 @@
         &_time {
           font-size: $uni-font-size-sm;
           color: $uni-text-color-grey;
+        }
+        
+        .status {
+          padding: 2px 4px;
+          background-color: $uni-color-primary;
+          font-size: $uni-font-size-sm;
+          color: #fff;
+          border-radius: 100px;
+          margin-left: 20rpx;
         }
       }
     }

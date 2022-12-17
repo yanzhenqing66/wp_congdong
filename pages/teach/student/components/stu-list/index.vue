@@ -12,8 +12,9 @@
         <com-button size='mini' type='warning' className="uni-radius-pill" @click="handlePublish(data.studentId, '2')">
           重新编辑
         </com-button>
-        <com-button type="primary" className="uni-radius-pill uni-ml-12" size="mini"
-          :disabled="data.commentStatus === 20" @click='commentHw(data.studentId)'>点评作业</com-button>
+        <com-button type="primary" className="uni-radius-pill uni-ml-12" size="mini">查看问卷</com-button>
+        <!-- <com-button type="primary" className="uni-radius-pill uni-ml-12" size="mini"
+          :disabled="data.commentStatus === 20" @click='commentHw(data.studentId)'>点评作业</com-button> -->
       </view>
     </view>
   </view>

@@ -13,7 +13,7 @@
         </template>
       </view>
       <view v-show="current === 1">
-        <template v-for="i in hwDetList" :key="i.id">
+        <template v-for="i in SubhwDetList" :key="i.id">
           <HomeworkItemDetail :current='current' :data='i' />
         </template>
       </view>

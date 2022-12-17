@@ -51,7 +51,7 @@
   } from '@/libs/day.js'
 
   const currentIndex = ref(0)
-  const items = ['默认时间', '尚未提交', '尚未点评']
+  const items = ['全部', '尚未提交', '尚未点评']
   const date = ref(getCurDay())
   const hwList = ref([])
 
